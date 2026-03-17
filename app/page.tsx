@@ -5,8 +5,20 @@ import { mediaGlobeQuery, MediaGlobeQueryResult } from "../lib/queries";
 import { doublePivot, wireOne } from "./layout";
 
 async function getMediaGlobeItems(): Promise<MediaItem[]> {
-  const data = await sanityClient.fetch<MediaGlobeQueryResult>(mediaGlobeQuery);
-  return data?.items?.filter((item) => item.url && item.type) ?? [];
+  const doc = await sanityClient.fetch<MediaGlobeQueryResult>(mediaGlobeQuery);
+  const items = doc?.items ?? [];
+
+  return items
+    .map((it, index) => {
+      return {
+        id: it.id ?? `idx${index}`,
+        title: it.title ?? "",
+        type: (it.type ?? "image") as MediaItem["type"],
+        url: it.url ?? undefined,
+        linkUrl: it.linkUrl ?? null,
+      };
+    })
+    .filter((item) => item.url && (item.type === "image" || item.type === "video"));
 }
 
 export default async function Home() {

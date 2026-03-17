@@ -1,21 +1,28 @@
-import { MediaItem } from '@/components/MediaGlobe';
 import { groq } from 'next-sanity';
 
 export const mediaGlobeQuery = groq`
-*[_type == "mediaGlobe"][0]{
+*[_type == "mediaGlobe"] | order(_createdAt desc)[0]{
+  title,
   items[]{
     "id": _key,
     "title": caption,
-    "type": kind,
+    type,
     "url": select(
-      kind == "image" => image.asset->url,
-      kind == "video" => coalesce(videoFile.asset->url, videoUrl)
+      type == "image" => image.asset->url,
+      type == "video" => coalesce(videoFile.asset->url, videoUrl)
     ),
-    "linkUrl": linkUrl
+    "linkUrl": externalLink
   }
 }
 `;
 
 export type MediaGlobeQueryResult = {
-  items?: MediaItem[];
-};
+  title?: string;
+  items?: {
+    id?: string;
+    title?: string;
+    type?: 'image' | 'video';
+    url?: string;
+    linkUrl?: string | null;
+  }[];
+} | null;
