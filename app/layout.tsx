@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Press_Start_2P, Wire_One } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -10,6 +11,30 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+});
+
+export const pressStart2P = Press_Start_2P({
+  variable: "--font-press-start-2p",
+  weight: "400",
+  subsets: ["latin"],
+});
+
+export const wireOne = Wire_One({
+  variable: "--font-wire-one",
+  weight: "400",
+  subsets: ["latin"],
+});
+
+export const bitcount = localFont({
+  src: "../public/bitcount-grid-double-ink.ttf",
+  variable: "--font-bitcount",
+  display: "swap",
+});
+
+export const doublePivot = localFont({
+  src: "../public/double-pivot.ttf",
+  variable: "--font-double-pivot",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -25,7 +50,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${bitcount.variable} ${pressStart2P.variable} ${wireOne.variable} ${doublePivot.variable}`}
       >
         {children}
       </body>
