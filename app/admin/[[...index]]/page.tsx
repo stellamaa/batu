@@ -1,13 +1,9 @@
-import { redirect } from "next/navigation";
+'use client'
 
-export const dynamicParams = false;
-
-export function generateStaticParams() {
-  // Provide the base /admin path for static export.
-  return [{ index: [] as string[] }];
-}
+import React from 'react';
+import { NextStudio } from 'next-sanity/studio'
+import config from '../../../sanity.congif'
 
 export default function AdminPage() {
-  // GitHub Pages uses static export; Sanity Studio requires a server.
-  redirect("/");
+  return <NextStudio config={config} />;
 }
