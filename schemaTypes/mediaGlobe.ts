@@ -1,9 +1,11 @@
-import { defineArrayMember, defineField, defineType } from 'sanity';
+import { defineType, defineField, defineArrayMember } from 'sanity';
 
 export const mediaGlobe = defineType({
   name: 'mediaGlobe',
   title: 'Media Globe',
   type: 'document',
+  
+
   fields: [
     defineField({
       name: 'title',
@@ -12,17 +14,19 @@ export const mediaGlobe = defineType({
     }),
     defineField({
       name: 'items',
-      title: 'Items',
+      title: 'Media Items',
       type: 'array',
       of: [
         defineArrayMember({
-          name: 'mediaGlobeItem',
-          title: 'Media Globe Item',
+          name: 'mediaItem',
+          title: 'Media Item',
           type: 'object',
+          
+
           fields: [
             defineField({
-              name: 'kind',
-              title: 'Type',
+              name: 'type',
+              title: 'Media Type',
               type: 'string',
               options: {
                 list: [
@@ -30,40 +34,40 @@ export const mediaGlobe = defineType({
                   { title: 'Video', value: 'video' },
                 ],
                 layout: 'radio',
-                direction: 'horizontal',
               },
               validation: (Rule) => Rule.required(),
             }),
+
             defineField({
               name: 'image',
               title: 'Image',
               type: 'image',
-              options: {
-                hotspot: true,
-              },
-              hidden: ({ parent }) => parent?.kind !== 'image',
+              options: { hotspot: true },
+              hidden: ({ parent }) => parent?.type !== 'image',
             }),
+
             defineField({
               name: 'videoFile',
-              title: 'Video file (for playback)',
+              title: 'Video File',
               type: 'file',
-              options: {
-                accept: 'video/*',
-              },
-              hidden: ({ parent }) => parent?.kind !== 'video',
+              options: { accept: 'video/*' },
+              hidden: ({ parent }) => parent?.type !== 'video',
             }),
+
             defineField({
               name: 'videoUrl',
-              title: 'Video source URL (fallback)',
+              title: 'Video URL (fallback)',
               type: 'url',
-              hidden: ({ parent }) => parent?.kind !== 'video',
+              hidden: ({ parent }) => parent?.type !== 'video',
             }),
+
             defineField({
-              name: 'linkUrl',
-              title: 'External link for this video',
+              name: 'externalLink',
+              title: 'External Link (opens on click)',
               type: 'url',
-              hidden: ({ parent }) => parent?.kind !== 'video',
+              hidden: ({ parent }) => parent?.type !== 'video',
             }),
+
             defineField({
               name: 'caption',
               title: 'Caption',
@@ -75,4 +79,3 @@ export const mediaGlobe = defineType({
     }),
   ],
 });
-

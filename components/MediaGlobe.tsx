@@ -7,9 +7,9 @@ import * as THREE from 'three';
 
 export type MediaItem = {
   id: string;
-  title: string;
+  title?: string;
   type: 'image' | 'video';
-  url: string;
+  url?: string;
   linkUrl?: string | null;
 };
 
@@ -18,12 +18,17 @@ function generateSpherePositions(count: number, radius: number) {
   const goldenAngle = Math.PI * (3 - Math.sqrt(5));
 
   if (count === 1) {
-    positions.push(new THREE.Vector3(0, 0, radius));
+    // Keep single item away from poles
+    positions.push(new THREE.Vector3(0, 0.25 * radius, Math.sqrt(1 - 0.25 * 0.25) * radius));
     return positions;
   }
 
+  // Avoid north/south poles so media doesn't cluster on the "nodes"
+  const poleClamp = 0.78; // max |y| on unit sphere
+
   for (let i = 0; i < count; i++) {
-    const y = 1 - (i / (count - 1)) * 2;
+    const t = i / (count - 1);
+    const y = (1 - t * 2) * poleClamp;
     const radiusAtY = Math.sqrt(1 - y * y);
     const theta = goldenAngle * i;
 
@@ -68,20 +73,36 @@ function MediaBillboard({
   isSelected,
 }: MediaBillboardProps) {
   const [texture, setTexture] = useState<THREE.Texture | null>(null);
+  const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
     if (!item.url) return;
 
     let mounted = true;
+    setIsReady(false);
 
     if (item.type === 'image') {
-      new THREE.TextureLoader().load(item.url, (tex) => {
-        tex.colorSpace = THREE.SRGBColorSpace;
-        tex.minFilter = THREE.LinearFilter;
-        tex.generateMipmaps = false;
+      const loader = new THREE.TextureLoader();
+      loader.setCrossOrigin('anonymous');
+      loader.load(
+        item.url,
+        (tex) => {
+          tex.colorSpace = THREE.SRGBColorSpace;
+          tex.minFilter = THREE.LinearFilter;
+          tex.magFilter = THREE.LinearFilter;
+          tex.generateMipmaps = false;
+          tex.needsUpdate = true;
 
-        if (mounted) setTexture(tex);
-      });
+          if (mounted) {
+            setTexture(tex);
+            setIsReady(true);
+          }
+        },
+        undefined,
+        () => {
+          if (mounted) setIsReady(false);
+        },
+      );
     }
 
     if (item.type === 'video') {
@@ -92,10 +113,20 @@ function MediaBillboard({
       video.muted = true;
       video.playsInline = true;
       video.autoplay = true;
+
+      const markReady = () => {
+        if (!mounted) return;
+        setIsReady(true);
+      };
+      video.addEventListener('loadeddata', markReady);
+      video.addEventListener('canplay', markReady);
       video.play().catch(() => {});
 
       const tex = new THREE.VideoTexture(video);
       tex.colorSpace = THREE.SRGBColorSpace;
+      tex.minFilter = THREE.LinearFilter;
+      tex.magFilter = THREE.LinearFilter;
+      tex.needsUpdate = true;
 
       if (mounted) setTexture(tex);
     }
@@ -111,9 +142,24 @@ function MediaBillboard({
   );
 
   const quaternion = useMemo(() => {
+    // Make the card face outward, but keep it vertically "upright"
+    // (i.e. its local +Y aligns with world +Y projected onto the tangent plane).
     const normal = position.clone().normalize();
-    const from = new THREE.Vector3(0, 0, 1);
-    return new THREE.Quaternion().setFromUnitVectors(from, normal);
+    const worldUp = new THREE.Vector3(0, 1, 0);
+
+    // Tangent axis around the sphere (card local +X)
+    let xAxis = new THREE.Vector3().crossVectors(worldUp, normal);
+    if (xAxis.lengthSq() < 1e-6) {
+      // If we're close to a pole, fall back to a different reference axis
+      xAxis = new THREE.Vector3().crossVectors(new THREE.Vector3(1, 0, 0), normal);
+    }
+    xAxis.normalize();
+
+    // Upright axis on the tangent plane (card local +Y)
+    const yAxis = new THREE.Vector3().crossVectors(normal, xAxis).normalize();
+
+    const m = new THREE.Matrix4().makeBasis(xAxis, yAxis, normal);
+    return new THREE.Quaternion().setFromRotationMatrix(m);
   }, [position]);
 
   return (
@@ -135,9 +181,10 @@ function MediaBillboard({
         <planeGeometry args={[0.7, 1.1]} />
         <meshBasicMaterial
           map={texture ?? undefined}
-          color={isSelected ? '#ffffff' : '#bbbbbb'}
+          color={texture ? (isSelected ? '#ffffff' : '#ffffff') : '#000000'}
           toneMapped={false}
           transparent
+          opacity={isReady ? 1 : 0}
         />
       </mesh>
     </group>
@@ -164,7 +211,7 @@ function GlobeContents({
     <>
       {items.map((item, index) => (
         <MediaBillboard
-          key={item.id}
+          key={item.id || `${item.type}-${item.url ?? "no-url"}-${index}`}
           item={item}
           position={positions[index]}
           isSelected={item.id === selectedId}
@@ -199,10 +246,7 @@ function GlobeContents({
 export function MediaGlobe({ items }: { items: MediaItem[] }) {
   const safeItems = items?.filter((i) => i.url) ?? [];
 
-  const [selected, setSelected] = useState<MediaItem | null>(
-    safeItems[0] ?? null
-  );
-
+  const [selected, setSelected] = useState<MediaItem | null>(safeItems[0] ?? null);
   const [cameraTarget, setCameraTarget] = useState<THREE.Vector3 | null>(null);
 
   return (
@@ -230,3 +274,4 @@ export function MediaGlobe({ items }: { items: MediaItem[] }) {
     </div>
   );
 }
+
