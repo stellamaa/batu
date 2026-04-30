@@ -157,7 +157,7 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
               setNewsletterEmail("");
             }}
           >
-            <p className="mb-1 text-center text-[18px] uppercase leading-none tracking-[0.08em] text-[#0222A0]/80">subscribe</p>
+            <p className="md:mb-5  md:mt-10 pt-20 pb-10 text-center text-[18px] uppercase leading-tight tracking-[0.08em] text-[#0222A0]/80">subscribe to the newsletter</p>
             <label htmlFor="newsletter-email" className="sr-only">
               Email address
             </label>
