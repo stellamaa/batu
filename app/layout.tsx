@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { bitcount, doublePivot, geistMono, geistSans, pressStart2P, wireOne } from "./fonts";
+import { PasswordGate } from "./PasswordGate";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -22,7 +23,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${bitcount.variable} ${pressStart2P.variable} ${wireOne.variable} ${doublePivot.variable}`}
       >
-        {children}
+        <PasswordGate>{children}</PasswordGate>
       </body>
     </html>
   );
