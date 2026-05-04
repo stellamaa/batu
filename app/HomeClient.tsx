@@ -10,6 +10,28 @@ const navItemBaseClass =
 /** Padding around the newsletter zone where hover previews stay hidden */
 const NEWSLETTER_NEAR_PADDING_PX = 96;
 
+function formatSubscribeError(raw: unknown): string {
+  if (typeof raw === "string") return raw;
+  if (raw && typeof raw === "object") {
+    const o = raw as Record<string, unknown>;
+    const msg =
+      typeof o.MESSAGE === "string"
+        ? o.MESSAGE
+        : typeof o.message === "string"
+          ? o.message
+          : typeof o.error === "string"
+            ? o.error
+            : null;
+    if (msg) {
+      if (/invalid or expired token/i.test(msg)) {
+        return "Sender rejected the API key (invalid or expired). In Sender: Settings → API access tokens, copy the full token into .env.local as SENDER_API_KEY=… with no quotes, then restart npm run dev.";
+      }
+      return msg;
+    }
+  }
+  return "Could not subscribe. Please try again.";
+}
+
 export function HomeClient({ randomImages }: { randomImages: string[] }) {
   const [activeVideo, setActiveVideo] = useState<string | null>(null);
   const [activeImage, setActiveImage] = useState<string | null>(null);
@@ -223,14 +245,8 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
                   setNewsletterSubmitted(true);
                   setNewsletterEmail("");
                 } else {
-                  const data = await res.json().catch(() => null);
-                  const rawError =
-                    data && typeof data === "object" && "error" in data
-                      ? (data.error as unknown)
-                      : "Failed to subscribe";
-                  const errorMessage =
-                    typeof rawError === "string" ? rawError : JSON.stringify(rawError);
-                  setNewsletterError(errorMessage);
+                  const data = (await res.json().catch(() => null)) as { error?: unknown } | null;
+                  setNewsletterError(formatSubscribeError(data?.error));
                 }
               } catch (err) {
                 setNewsletterError("Network error while subscribing");
@@ -267,7 +283,7 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
                 type="submit"
                 className="mt-2 text-center text-[12px] uppercase tracking-[0.08em] text-[#0222A0] hover:opacity-70"
               >
-                sumbit
+                submit
               </button>
             )}
           </form>

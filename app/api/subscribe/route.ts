@@ -1,16 +1,40 @@
 import { NextResponse } from "next/server";
 
+/** Normalize token from .env (quotes/Bearer prefix often break JWT auth). */
+function normalizeSenderApiKey(raw: string): string {
+  let key = raw.trim().replace(/^Bearer\s+/i, "");
+  if (
+    (key.startsWith('"') && key.endsWith('"')) ||
+    (key.startsWith("'") && key.endsWith("'"))
+  ) {
+    key = key.slice(1, -1).trim();
+  }
+  return key.replace(/^\uFEFF/, "");
+}
+
+export const runtime = "nodejs";
+
 export async function POST(req: Request) {
   try {
     const { email } = await req.json();
-    const apiKey = process.env.SENDER_API_KEY;
-    const groupId = process.env.SENDER_GROUP_ID;
+    const rawKey =
+      process.env.SENDER_API_KEY ?? process.env.SENDER_NET_API_KEY ?? "";
+    const apiKey = normalizeSenderApiKey(rawKey);
+    const groupId = process.env.SENDER_GROUP_ID?.trim();
 
     if (!email) {
       return NextResponse.json({ error: "Email required" }, { status: 400 });
     }
     if (!apiKey) {
       return NextResponse.json({ error: "Missing SENDER_API_KEY" }, { status: 500 });
+    }
+
+    if (process.env.NODE_ENV === "development") {
+      console.log(
+        "[api/subscribe] SENDER_API_KEY length:",
+        apiKey.length,
+        "(expect ~800+ for a full JWT)"
+      );
     }
 
     const payload: { email: string; groups?: string[] } = { email };
@@ -23,6 +47,7 @@ export async function POST(req: Request) {
       headers: {
         Authorization: `Bearer ${apiKey}`,
         "Content-Type": "application/json",
+        Accept: "application/json",
       },
       body: JSON.stringify(payload),
     });
