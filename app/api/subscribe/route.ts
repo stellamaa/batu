@@ -16,17 +16,32 @@ export const runtime = "nodejs";
 
 export async function POST(req: Request) {
   try {
-    const { email } = await req.json();
+    let body: { email?: string };
+    try {
+      body = await req.json();
+    } catch {
+      return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
+    }
+
+    const email = typeof body.email === "string" ? body.email : undefined;
     const rawKey =
       process.env.SENDER_API_KEY ?? process.env.SENDER_NET_API_KEY ?? "";
     const apiKey = normalizeSenderApiKey(rawKey);
     const groupId = process.env.SENDER_GROUP_ID?.trim();
 
-    if (!email) {
+    if (!email?.trim()) {
       return NextResponse.json({ error: "Email required" }, { status: 400 });
     }
     if (!apiKey) {
-      return NextResponse.json({ error: "Missing SENDER_API_KEY" }, { status: 500 });
+      return NextResponse.json(
+        {
+          error: {
+            MESSAGE:
+              "Server is missing SENDER_API_KEY. In Vercel: Project → Settings → Environment Variables → add SENDER_API_KEY (same value as .env.local), then redeploy.",
+          },
+        },
+        { status: 503 }
+      );
     }
 
     if (process.env.NODE_ENV === "development") {
@@ -53,9 +68,14 @@ export async function POST(req: Request) {
     });
 
     const contentType = response.headers.get("content-type") || "";
-    const data = contentType.includes("application/json")
-      ? await response.json()
-      : await response.text();
+    let data: unknown;
+    try {
+      data = contentType.includes("application/json")
+        ? await response.json()
+        : await response.text();
+    } catch {
+      data = { MESSAGE: "Unexpected response from Sender" };
+    }
 
     if (!response.ok) {
       return NextResponse.json({ error: data }, { status: response.status });
@@ -63,6 +83,14 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ success: true });
   } catch {
-    return NextResponse.json({ error: "Something went wrong" }, { status: 500 });
+    return NextResponse.json(
+      {
+        error: {
+          MESSAGE:
+            "Subscribe request failed unexpectedly. Check server logs or confirm SENDER_API_KEY is set on your host.",
+        },
+      },
+      { status: 500 }
+    );
   }
 }

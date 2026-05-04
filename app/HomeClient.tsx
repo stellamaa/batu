@@ -24,7 +24,7 @@ function formatSubscribeError(raw: unknown): string {
             : null;
     if (msg) {
       if (/invalid or expired token/i.test(msg)) {
-        return "Sender rejected the API key (invalid or expired). In Sender: Settings → API access tokens, copy the full token into .env.local as SENDER_API_KEY=… with no quotes, then restart npm run dev.";
+        return "Sender rejected the API key (invalid or expired). Copy a fresh token from Sender → Settings → API access tokens into SENDER_API_KEY locally (.env.local) and on your host (e.g. Vercel → Environment Variables), then redeploy.";
       }
       return msg;
     }
