@@ -9,6 +9,8 @@ const navItemBaseClass =
 
 /** Padding around the newsletter zone where hover previews stay hidden */
 const NEWSLETTER_NEAR_PADDING_PX = 96;
+/** Padding around links/buttons where hover previews stay hidden */
+const INTERACTIVE_NEAR_PADDING_PX = 42;
 
 function formatSubscribeError(raw: unknown): string {
   if (typeof raw === "string") return raw;
@@ -24,7 +26,7 @@ function formatSubscribeError(raw: unknown): string {
             : null;
     if (msg) {
       if (/invalid or expired token/i.test(msg)) {
-        return "Sender rejected the API key (invalid or expired). Copy a fresh token from Sender → Settings → API access tokens into SENDER_API_KEY locally (.env.local) and on your host (e.g. Vercel → Environment Variables), then redeploy.";
+        return "Sender rejected this API key (invalid or expired). Create a new token in Sender → Settings → API access tokens. In Netlify: Key must be exactly SENDER_API_KEY and the JWT goes only in Value; set the Production value if you use “different value per context”; enable Functions + Runtime scopes; save and redeploy. Match the same token that works locally in .env.local.";
       }
       return msg;
     }
@@ -49,6 +51,25 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
     const width = window.innerWidth;
     const height = window.innerHeight;
     if (!width || !height) return;
+
+    const interactiveElements = document.querySelectorAll(
+      "a, button, input, textarea, select, form"
+    );
+    for (const element of interactiveElements) {
+      const r = element.getBoundingClientRect();
+      const p = INTERACTIVE_NEAR_PADDING_PX;
+      const nearInteractive =
+        event.clientX >= r.left - p &&
+        event.clientX <= r.right + p &&
+        event.clientY >= r.top - p &&
+        event.clientY <= r.bottom + p;
+      if (nearInteractive) {
+        setActiveVideo(null);
+        setActiveImage(null);
+        setActiveIndex(null);
+        return;
+      }
+    }
 
     const zone = newsletterZoneRef.current;
     if (zone) {
@@ -116,7 +137,7 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
             Info
           </button>
           <a
-            href="https://example.com/tour"
+            href="https://ra.co/dj/batu-uk"
             target="_blank"
             rel="noreferrer"
             className={`${navItemBaseClass} pointer-events-auto fixed right-4 top-4 hidden md:inline-flex`}
@@ -144,7 +165,7 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
             <button type="button" onClick={() => setIsInfoOpen(true)} className={`inline-flex ${navItemBaseClass}`}>
               Info
             </button>
-            <a href="https://example.com/tour" target="_blank" rel="noreferrer" className={`inline-flex ${navItemBaseClass}`}>
+            <a href="https://ra.co/dj/batu-uk" target="_blank" rel="noreferrer" className={`inline-flex ${navItemBaseClass}`}>
               Tour
             </a>
             <a href="https://batutimedance.bandcamp.com/" target="_blank" rel="noreferrer" className={`inline-flex ${navItemBaseClass}`}>
@@ -174,16 +195,71 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
             </button>
 
             <div className="space-y-6 pr-8 text-sm leading-relaxed md:text-base">
-             
               <p>
-                Bridging the sound of two distinctive auteurs within modern electronic music, Exhale is the natural convergence of Batu and Donato Dozzy's revered, distinctive sonic signatures. With techno in the broadest sense as a framework, the pair have created an immersive listening experience that celebrates the flashpoint of inspiration and thrives on experimentation.
+                As an artist, Batu continually strikes out on his own. Rightly
+                hailed for his distinctive slant on modernist techno and
+                experimental club music, he&apos;s also prolific beyond the
+                dancefloor. His is a sound marked out by bold shapes and
+                angular expressions, whether strapped to physical rhythms or
+                not.
               </p>
 
               <p>
-                As Batu, Omar McCutcheon has made a huge impression on modern club music by channeling the soundsystem-rooted principles of dubstep into inventive mutations that defy easy categorisation. Donato Dozzy has been a leading figure in European techno since the mid 00s, helping pioneer a culture of deeply immersive, subtle dance music charged with ambient atmospheres. The pair first connected in Japan in 2019, discovering a mutual appreciation for each others' work and a curiosity about how their distinct sounds might intersect. The first opportunity to collaborate came through DJing together, relishing the spirit of improvisation to play a surprise B2B set at Draaimolen Festival in the Netherlands in 2023 that went viral shortly after.
+                His 2022 debut album Opal took his accomplished sound design
+                into broader spheres of expression, while production work for
+                serpentwithfeet saw him approaching pop sensibilities with his
+                non-conformist sonic palette. As well as his production work,
+                Batu&apos;s presence as a DJ on the international club and
+                festival circuit touches on venerated events such as
+                Glastonbury, Dekmantel Festival, Sonar and Unsound. The
+                flexibility in his sound also translates to the intimacy of
+                smaller underground events - an environment which remains
+                inspiring even as he graces some of the biggest stages for
+                electronic music globally.
               </p>
 
-        
+              <p>
+                Beyond sonics, his interests expand into visual work too,
+                having produced and directed the video to his own track
+                &lsquo;Solace&rsquo; and collaborated on an A/V composition with
+                Harry Butt for his Crack Magazine cover feature - one of
+                multiple cover features he&apos;s been placed on.
+              </p>
+
+              <p>
+                Taken alongside his music, Batu&apos;s holistic engagement with
+                electronic music culture adds up to a considered spectrum of
+                output and efforts with a shared aim - to push things forward.
+              </p>
+
+              <p className="pt-4">
+                Contact:{" "}
+                <a
+                  href="mailto:raj@giantartistmanagement.com"
+                  className="hover:line-through"
+                >
+                  raj@giantartistmanagement.com
+                </a>
+                {" / "}
+                <a
+                  href="mailto:hiroki@giantartistmanagement.com"
+                  className="hover:line-through"
+                >
+                  hiroki@giantartistmanagement.com
+                </a>
+              </p>
+
+              <p className="pt-6">
+                Site by{" "}
+                <a
+                  href="https://stellamathioudakis.com"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="hover:line-through"
+                >
+                  stellamathioudakis.com
+                </a>
+              </p>
             </div>
           </div>
         </div>
@@ -220,10 +296,24 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
       )}
 
       <section className="relative z-20 flex min-h-screen items-center justify-center p-6">
-        <div className="flex flex-col items-center gap-4">
-          <img src="/logo.png" alt="Album cover" className="h-auto w-[260px] max-w-[70vw] object-cover shadow-2xl" />
-          <p className="text-center text-base uppercase tracking-[0.2em] text-[#0222A0]/90 md:text-lg">release 5th of May</p>
-          <div ref={newsletterZoneRef} className="mt-12 flex w-full max-w-[300px] flex-col items-center">
+        <div className="flex flex-col items-center gap-0">
+          <a
+            href="https://k7.lnk.to/exhale"
+            target="_blank"
+            rel="noreferrer"
+            className="block md:mt-16 lg:mt-0"
+          >
+            <img
+              src="/K7466-Album-Main.jpg"
+              alt="Album cover"
+              className="h-auto w-[92vw] max-w-[92vw] object-cover md:w-[340px] md:max-w-none lg:w-90"
+            />
+          </a>
+          <p className="text-center text-base uppercase tracking-[0.1em] md:mt-3 text-[#0222A0]/90 md:text-lg">Batu & Donato Dozzy -
+          Exhale </p>
+          <p className="text-center text-base lowercase tracking-[0rem] text-[#0222A0]/90 md:text-lg"> out now on K7
+          </p>
+          <div ref={newsletterZoneRef} className="mt-2 flex w-full max-w-[300px] flex-col items-center">
           <form
             className="flex w-full flex-col items-center"
             onSubmit={async (event) => {

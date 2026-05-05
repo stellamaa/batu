@@ -9,7 +9,7 @@ function normalizeSenderApiKey(raw: string): string {
   ) {
     key = key.slice(1, -1).trim();
   }
-  return key.replace(/^\uFEFF/, "");
+  return key.replace(/^\uFEFF/, "").replace(/\s+/g, "");
 }
 
 export const runtime = "nodejs";
@@ -37,18 +37,22 @@ export async function POST(req: Request) {
         {
           error: {
             MESSAGE:
-              "Server is missing SENDER_API_KEY. In Vercel: Project → Settings → Environment Variables → add SENDER_API_KEY (same value as .env.local), then redeploy.",
+              "Server is missing SENDER_API_KEY. Add it in your host (e.g. Netlify: Site → Environment variables, or Vercel: Project → Settings → Environment Variables), scopes including Functions/Runtime, then redeploy.",
           },
         },
         { status: 503 }
       );
     }
 
-    if (process.env.NODE_ENV === "development") {
+    const logKeyMeta =
+      process.env.NODE_ENV === "development" ||
+      process.env.NETLIFY === "true" ||
+      Boolean(process.env.VERCEL);
+    if (logKeyMeta) {
       console.log(
         "[api/subscribe] SENDER_API_KEY length:",
         apiKey.length,
-        "(expect ~800+ for a full JWT)"
+        "(full Sender JWTs are usually hundreds of chars; if this is tiny or 0, fix Netlify env / redeploy)"
       );
     }
 
