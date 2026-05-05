@@ -5,7 +5,7 @@ import { doublePivot, wireOne } from "./fonts";
 
 const videos = ["/batuvideo.mov", "/batuvideo2.mov", "/batuvideo3.mov"];
 const navItemBaseClass =
-  "z-[60] items-center px-1 py-1 text-[28px] uppercase tracking-[0.03em] text-[#0222A0] no-underline transition-opacity duration-200 hover:opacity-80";
+  "z-[60] items-center px-1 py-1 text-[28px] uppercase tracking-[0.03em] text-[#0222A0] no-underline transition-opacity duration-200 hover:opacity-80 hover:line-through";
 
 /** Padding around the newsletter zone where hover previews stay hidden */
 const NEWSLETTER_NEAR_PADDING_PX = 96;
@@ -189,7 +189,7 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
             <button
               type="button"
               onClick={() => setIsInfoOpen(false)}
-              className="absolute right-4 top-0 text-sm uppercase tracking-[0.08em] text-[#0222A0] hover:opacity-70"
+              className="absolute right-4 top-0 text-sm uppercase tracking-[0.08em] text-[#0222A0] hover:opacity-70 hover:line-through"
             >
               Close
             </button>
@@ -309,8 +309,14 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
               className="h-auto w-[92vw] max-w-[92vw] object-cover md:w-[340px] md:max-w-none lg:w-90"
             />
           </a>
-          <p className="text-center text-base uppercase tracking-[0.1em] md:mt-3 text-[#0222A0]/90 md:text-lg">Batu & Donato Dozzy -
-          Exhale </p>
+          <a
+            href="https://k7.lnk.to/exhale"
+            target="_blank"
+            rel="noreferrer"
+            className="text-center text-base uppercase tracking-[0.1em] md:mt-3 text-[#0222A0]/90 hover:line-through md:text-lg"
+          >
+            Batu & Donato Dozzy - Exhale
+          </a>
           <p className="text-center text-base lowercase tracking-[0rem] text-[#0222A0]/90 md:text-lg"> out now on K7
           </p>
           <div ref={newsletterZoneRef} className="mt-2 flex w-full max-w-[300px] flex-col items-center">
