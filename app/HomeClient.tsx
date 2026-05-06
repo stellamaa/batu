@@ -132,7 +132,7 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
           <button
             type="button"
             onClick={() => setIsInfoOpen(true)}
-            className={`${navItemBaseClass} pointer-events-auto fixed left-4 top-4 hidden md:inline-flex`}
+            className={`${navItemBaseClass} pointer-events-auto fixed left-4 top-1 hidden md:inline-flex`}
           >
             Info
           </button>
@@ -140,7 +140,7 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
             href="https://ra.co/dj/batu-uk"
             target="_blank"
             rel="noreferrer"
-            className={`${navItemBaseClass} pointer-events-auto fixed right-4 top-4 hidden md:inline-flex`}
+            className={`${navItemBaseClass} pointer-events-auto fixed right-4 top-1 hidden md:inline-flex`}
           >
             Tour
           </a>
@@ -148,7 +148,7 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
             href="https://batutimedance.bandcamp.com/"
             target="_blank"
             rel="noreferrer"
-            className={`${navItemBaseClass} pointer-events-auto fixed left-4 bottom-4 hidden md:inline-flex`}
+            className={`${navItemBaseClass} pointer-events-auto fixed left-4 bottom-1 hidden md:inline-flex`}
           >
             Bandcamp
           </a>
@@ -156,12 +156,12 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
             href="https://www.instagram.com/batu_timedance/"
             target="_blank"
             rel="noreferrer"
-            className={`${navItemBaseClass} pointer-events-auto fixed bottom-4 right-4 hidden md:inline-flex`}
+            className={`${navItemBaseClass} pointer-events-auto fixed bottom-1 right-4 hidden md:inline-flex`}
           >
             Instagram
           </a>
 
-          <div className="pointer-events-auto fixed bottom-4 left-1/2 flex -translate-x-1/2 items-center gap-4 md:hidden">
+          <div className="pointer-events-auto fixed bottom-4 left-1/2 z-[70] flex -translate-x-1/2 items-center gap-4 md:hidden">
             <button type="button" onClick={() => setIsInfoOpen(true)} className={`inline-flex ${navItemBaseClass}`}>
               Info
             </button>
@@ -301,12 +301,12 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
             href="https://k7.lnk.to/exhale"
             target="_blank"
             rel="noreferrer"
-            className="block md:mt-16 lg:mt-0"
+            className="block md:mt-16 lg:mt-12"
           >
             <img
               src="/K7466-Album-Main.jpg"
               alt="Album cover"
-              className="h-auto w-[92vw] max-w-[92vw] object-cover md:w-[340px] md:max-w-none lg:w-90"
+              className="h-auto w-[92vw] max-w-[92vw] object-contain md:w-[340px] md:max-w-none md:mt-15 lg:w-[350px]"
             />
           </a>
           <a

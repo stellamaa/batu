@@ -23,3 +23,10 @@ body {
   background-repeat: no-repeat;
   cursor: crosshair
 }
+
+@media (max-width: 767px) {
+  html,
+  body {
+    overflow: hidden;
+  }
+}
