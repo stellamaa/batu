@@ -1,6 +1,6 @@
 "use client";
 
-import { type MouseEventHandler, useRef, useState } from "react";
+import { type MouseEventHandler, useEffect, useRef, useState } from "react";
 import { doublePivot, wireOne } from "./fonts";
 
 const videos = ["/batuvideo.mov", "/batuvideo2.mov", "/batuvideo3.mov"];
@@ -44,8 +44,41 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
   const [newsletterSubmitted, setNewsletterSubmitted] = useState(false);
   const [newsletterError, setNewsletterError] = useState<string | null>(null);
   const [isInfoOpen, setIsInfoOpen] = useState(false);
+  const [isInfoMounted, setIsInfoMounted] = useState(false);
+  const [isInfoVisible, setIsInfoVisible] = useState(false);
+  const [isInfoClosing, setIsInfoClosing] = useState(false);
   const newsletterZoneRef = useRef<HTMLDivElement>(null);
   const hasValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(newsletterEmail.trim());
+
+  useEffect(() => {
+    if (!isInfoOpen) return;
+    setIsInfoMounted(true);
+    setIsInfoClosing(false);
+    setIsInfoVisible(false);
+
+    // Ensure the modal renders in its "hidden" state for one paint,
+    // then toggle visibility on the next frame so CSS transitions run on open.
+    let raf1 = 0;
+    let raf2 = 0;
+    raf1 = window.requestAnimationFrame(() => {
+      raf2 = window.requestAnimationFrame(() => setIsInfoVisible(true));
+    });
+    return () => {
+      if (raf1) window.cancelAnimationFrame(raf1);
+      if (raf2) window.cancelAnimationFrame(raf2);
+    };
+  }, [isInfoOpen]);
+
+  const openInfo = () => setIsInfoOpen(true);
+  const closeInfo = () => {
+    setIsInfoClosing(true);
+    setIsInfoVisible(false);
+    window.setTimeout(() => {
+      setIsInfoOpen(false);
+      setIsInfoMounted(false);
+      setIsInfoClosing(false);
+    }, 200);
+  };
 
   const handleMouseMove: MouseEventHandler<HTMLElement> = (event) => {
     const width = window.innerWidth;
@@ -131,7 +164,7 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
         <nav className={`${wireOne.className} z-40`}>
           <button
             type="button"
-            onClick={() => setIsInfoOpen(true)}
+            onClick={openInfo}
             className={`${navItemBaseClass} pointer-events-auto fixed left-4 top-1 hidden md:inline-flex`}
           >
             Info
@@ -162,7 +195,7 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
           </a>
 
           <div className="pointer-events-auto fixed inset-x-0 bottom-0 z-[90] flex items-center justify-center gap-4 bg-[#A74814] px-4 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-2 md:hidden">
-            <button type="button" onClick={() => setIsInfoOpen(true)} className={`inline-flex ${navItemBaseClass}`}>
+            <button type="button" onClick={openInfo} className={`inline-flex ${navItemBaseClass}`}>
               Info
             </button>
             <a href="https://ra.co/dj/batu-uk" target="_blank" rel="noreferrer" className={`inline-flex ${navItemBaseClass}`}>
@@ -183,23 +216,33 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
         </div>
       </header>
 
-      {isInfoOpen && (
-        <div className="fixed inset-0 z-[80] flex items-center justify-center bg-[#A74814] p-4 pt-1 md:p-8">
-          <div className="hide-scrollbar relative max-h-[85vh] w-full max-w-[92vw] overflow-y-auto bg-[#A74814] p-4 pt-1 text-[#0222A0] md:max-w-3xl md:p-8">
+      {isInfoMounted && (
+        <div
+          className={[
+            "fixed inset-0 z-[50] flex items-center justify-center bg-[#A74814] p-4 pt-1 transition-opacity duration-300 md:p-8",
+            isInfoVisible && !isInfoClosing ? "opacity-100" : "opacity-0",
+          ].join(" ")}
+        >
+          <div
+            className={[
+              "hide-scrollbar relative max-h-[85vh] w-full max-w-[92vw] overflow-y-auto bg-[#A74814] p-4 pt-1 text-[#0222A0] transition-transform duration-200 sm:max-w-3xl md:p-8",
+              isInfoVisible && !isInfoClosing ? "translate-y-0" : "translate-y-0",
+            ].join(" ")}
+          >
             <div className="sticky top-0 z-10 -mx-5 mb-4 flex items-start justify-between bg-[#A74814] px-5 pb-3 pt-1 md:-mx-8 md:px-8">
               <p className="text-sm uppercase tracking-[0.08em] text-[#0222A0] md:text-base">
                 Info
               </p>
               <button
                 type="button"
-                onClick={() => setIsInfoOpen(false)}
+                onClick={closeInfo}
                 className="text-sm uppercase tracking-[0.08em] text-[#0222A0] hover:opacity-70 hover:line-through md:text-base"
               >
                 Close
               </button>
             </div>
 
-            <div className="space-y-3 w-70 pr-4 pb-10 text-[12px] leading-relaxed md:space-y-6 md:pr-8 md:pb-0 md:text-base">
+            <div className="space-y-3 w-70 pr-4 pb-10 text-[12px] leading-relaxed md:space-y-4 md:pr-8 md:pb-0 md:text-base md:w-full md:mt-15" >
               <p>
                 As an artist, Batu continually strikes out on his own. Rightly
                 hailed for his distinctive slant on modernist techno and
