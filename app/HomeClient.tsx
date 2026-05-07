@@ -194,7 +194,7 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
               Close
             </button>
 
-            <div className="space-y-5 pr-4 text-[12px] leading-relaxed md:space-y-6 md:pr-8 md:text-base">
+            <div className="space-y-5 pr-4 text-[12px] w-50 leading-relaxed md:space-y-6 md:pr-8 md:text-base">
               <p>
                 As an artist, Batu continually strikes out on his own. Rightly
                 hailed for his distinctive slant on modernist techno and
