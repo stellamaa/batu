@@ -184,9 +184,9 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
       </header>
 
       {isInfoOpen && (
-        <div className="fixed inset-0 z-[80] flex items-center justify-center bg-[#A74814] p-4 pt-1 md:p-8">
-          <div className="relative max-h-[85vh] w-full max-w-[92vw] overflow-y-auto bg-[#A74814] p-5 text-[#0222A0] md:max-w-3xl md:p-8">
-            <div className="sticky top-0 z-10 -mx-5 mb-4 flex items-start justify-between bg-[#A74814] px-5 pt-2 md:-mx-8 md:px-8">
+        <div className="fixed inset-0 z-[110] flex items-center justify-center bg-[#A74814] p-4 pt-1 md:p-8">
+          <div className="hide-scrollbar relative max-h-[85vh] w-full max-w-[92vw] overflow-y-auto bg-[#A74814] p-5 text-[#0222A0] md:max-w-3xl md:p-8">
+            <div className="sticky top-0 z-10 -mx-5 mb-4 flex items-start justify-between bg-[#A74814] px-5 pb-3 pt-1 md:-mx-8 md:px-8">
               <p className="text-sm uppercase tracking-[0.08em] text-[#0222A0] md:text-base">
                 Info
               </p>
@@ -199,7 +199,7 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
               </button>
             </div>
 
-            <div className="space-y-5 pr-4 text-[12px] w-50 leading-relaxed md:space-y-6 md:pr-8 md:text-base">
+            <div className="space-y-5 pr-4 pb-10 text-[12px] leading-relaxed md:space-y-6 md:pr-8 md:pb-0 md:text-base">
               <p>
                 As an artist, Batu continually strikes out on his own. Rightly
                 hailed for his distinctive slant on modernist techno and
@@ -325,7 +325,7 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
           <p className="text-center font-light text-[13px] lowercase tracking-[0rem] text-[#0222A0]/90 md:text-lg">
             out now on K7
           </p>
-          <div ref={newsletterZoneRef} className="mt-1 flex w-full max-w-[300px] flex-col items-center md:mt-2">
+          <div ref={newsletterZoneRef} className="mt-4  flex w-full max-w-[300px] flex-col items-center md:mt-2">
           <form
             className="flex w-full flex-col items-center"
             onSubmit={async (event) => {
