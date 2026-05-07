@@ -184,9 +184,9 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
       </header>
 
       {isInfoOpen && (
-        <div className="fixed inset-0 z-[80] flex items-center justify-center bg-[#A74814] p-4 md:p-8">
+        <div className="fixed inset-0 z-[80] flex items-center justify-center bg-[#A74814] p-4 pt-1 md:p-8">
           <div className="relative max-h-[85vh] w-full max-w-[92vw] overflow-y-auto bg-[#A74814] p-5 text-[#0222A0] md:max-w-3xl md:p-8">
-            <div className="sticky top-0 z-10 -mx-5 mb-4 flex items-start justify-between bg-[#A74814] px-5 pt-3 md:-mx-8 md:px-8">
+            <div className="sticky top-0 z-10 -mx-5 mb-4 flex items-start justify-between bg-[#A74814] px-5 pt-2 md:-mx-8 md:px-8">
               <p className="text-sm uppercase tracking-[0.08em] text-[#0222A0] md:text-base">
                 Info
               </p>
@@ -254,7 +254,7 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
                 </a>
               </p>
 
-              <p className="pt-6">
+              <p className="pt-3">
                 Site by{" "}
                 <a
                   href="https://stellamathioudakis.com"
