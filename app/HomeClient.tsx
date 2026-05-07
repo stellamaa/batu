@@ -161,7 +161,7 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
             Instagram
           </a>
 
-          <div className="pointer-events-auto fixed inset-x-0 bottom-0 z-[90] flex items-center justify-center gap-4 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-1 md:hidden">
+          <div className="pointer-events-auto fixed inset-x-0 bottom-0 z-[90] flex items-center justify-center gap-4 bg-[#A74814] px-4 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-2 md:hidden">
             <button type="button" onClick={() => setIsInfoOpen(true)} className={`inline-flex ${navItemBaseClass}`}>
               Info
             </button>
@@ -186,13 +186,18 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
       {isInfoOpen && (
         <div className="fixed inset-0 z-[80] flex items-center justify-center bg-[#A74814] p-4 md:p-8">
           <div className="relative max-h-[85vh] w-full max-w-[92vw] overflow-y-auto bg-[#A74814] p-5 text-[#0222A0] md:max-w-3xl md:p-8">
-            <button
-              type="button"
-              onClick={() => setIsInfoOpen(false)}
-              className="absolute right-4 top-0 text-sm uppercase tracking-[0.08em] text-[#0222A0] hover:opacity-70 hover:line-through"
-            >
-              Close
-            </button>
+            <div className="sticky top-0 z-10 -mx-5 mb-4 flex items-start justify-between bg-[#A74814] px-5 pt-3 md:-mx-8 md:px-8">
+              <p className="text-sm uppercase tracking-[0.08em] text-[#0222A0] md:text-base">
+                Info
+              </p>
+              <button
+                type="button"
+                onClick={() => setIsInfoOpen(false)}
+                className="text-sm uppercase tracking-[0.08em] text-[#0222A0] hover:opacity-70 hover:line-through md:text-base"
+              >
+                Close
+              </button>
+            </div>
 
             <div className="space-y-5 pr-4 text-[12px] w-50 leading-relaxed md:space-y-6 md:pr-8 md:text-base">
               <p>
@@ -295,7 +300,7 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
         </div>
       )}
 
-      <section className="relative z-20 flex min-h-[100svh] items-center justify-center px-4 pb-10 pt-3 md:p-6">
+      <section className="relative z-20 flex min-h-[100svh] items-center justify-center px-4 pb-16 pt-3 md:p-6">
         <div className="flex flex-col items-center gap-0">
           <a
             href="https://k7.lnk.to/exhale"
