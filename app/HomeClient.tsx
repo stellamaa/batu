@@ -161,7 +161,7 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
             Instagram
           </a>
 
-          <div className="pointer-events-auto fixed inset-x-0 bottom-0 z-[90] flex items-center justify-center gap-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3 md:hidden">
+          <div className="pointer-events-auto fixed inset-x-0 bottom-0 z-[90] flex items-center justify-center gap-4 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-1 md:hidden">
             <button type="button" onClick={() => setIsInfoOpen(true)} className={`inline-flex ${navItemBaseClass}`}>
               Info
             </button>
@@ -185,7 +185,7 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
 
       {isInfoOpen && (
         <div className="fixed inset-0 z-[80] flex items-center justify-center bg-[#A74814] p-4 md:p-8">
-          <div className="relative max-h-[85vh] w-full max-w-3xl overflow-y-auto bg-[#A74814] p-6 text-[#0222A0] md:p-8">
+          <div className="relative max-h-[85vh] w-full max-w-[92vw] overflow-y-auto bg-[#A74814] p-5 text-[#0222A0] md:max-w-3xl md:p-8">
             <button
               type="button"
               onClick={() => setIsInfoOpen(false)}
@@ -194,7 +194,7 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
               Close
             </button>
 
-            <div className="space-y-6 pr-8 text-sm leading-relaxed md:text-base">
+            <div className="space-y-5 pr-4 text-[12px] leading-relaxed md:space-y-6 md:pr-8 md:text-base">
               <p>
                 As an artist, Batu continually strikes out on his own. Rightly
                 hailed for his distinctive slant on modernist techno and
@@ -295,7 +295,7 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
         </div>
       )}
 
-      <section className="relative z-20 flex min-h-[100svh] items-center justify-center p-4 md:p-6">
+      <section className="relative z-20 flex min-h-[100svh] items-center justify-center px-4 pb-10 pt-3 md:p-6">
         <div className="flex flex-col items-center gap-0">
           <a
             href="https://k7.lnk.to/exhale"
@@ -306,21 +306,21 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
             <img
               src="/K7466-Album-Main.jpg"
               alt="Album cover"
-              className="h-auto w-[82vw] max-w-[82vw] object-contain md:w-[380px] md:max-w-none lg:w-[350px]"
+              className="h-auto w-[78vw] max-w-[78vw] object-contain md:w-[380px] md:max-w-none lg:w-[350px]"
             />
           </a>
           <a
             href="https://k7.lnk.to/exhale"
             target="_blank"
             rel="noreferrer"
-            className="text-center font-light text-[14px] uppercase tracking-[0.1em] text-[#0222A0]/90 hover:line-through md:mt-3 md:text-lg"
+            className="text-center font-light text-[13px] uppercase tracking-[0.1em] text-[#0222A0]/90 hover:line-through md:mt-3 md:text-lg"
           >
             Batu & Donato Dozzy - 'Exhale'
           </a>
-          <p className="text-center font-light text-[14px] lowercase tracking-[0rem] text-[#0222A0]/90 md:text-lg">
+          <p className="text-center font-light text-[13px] lowercase tracking-[0rem] text-[#0222A0]/90 md:text-lg">
             out now on K7
           </p>
-          <div ref={newsletterZoneRef} className="mt-3 flex w-full max-w-[300px] flex-col items-center md:mt-2">
+          <div ref={newsletterZoneRef} className="mt-1 flex w-full max-w-[300px] flex-col items-center md:mt-2">
           <form
             className="flex w-full flex-col items-center"
             onSubmit={async (event) => {
@@ -350,7 +350,7 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
               }
             }}
           >
-            <p className="pt-6 pb-4 text-center font-light text-[14px] uppercase leading-tight tracking-[0.08em] text-[#0222A0]/80 md:mb-5 md:mt-10 md:pt-20 md:pb-10 md:text-[18px]">
+            <p className="pt-3 pb-2 text-center font-light text-[12px] uppercase leading-tight tracking-[0.08em] text-[#0222A0]/80 md:mb-5 md:mt-10 md:pt-20 md:pb-10 md:text-[18px]">
               subscribe to the newsletter
             </p>
             <label htmlFor="newsletter-email" className="sr-only">
@@ -380,7 +380,7 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
             {!newsletterSubmitted && hasValidEmail && (
               <button
                 type="submit"
-                className="mt-2 text-center text-[11px] uppercase tracking-[0.08em] text-[#0222A0] hover:opacity-70"
+                className="mt-1 text-center text-[11px] uppercase tracking-[0.08em] text-[#0222A0] hover:opacity-70"
               >
                 submit
               </button>
