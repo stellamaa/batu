@@ -311,21 +311,21 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
             <img
               src="/K7466-Album-Main.jpg"
               alt="Album cover"
-              className="h-auto w-[78vw] max-w-[78vw] object-contain md:w-[380px] md:max-w-none lg:w-[350px]"
+              className="h-auto w-[82vw] max-w-[82vw] mb-2 object-contain md:w-[380px] md:max-w-none lg:w-[350px]"
             />
           </a>
           <a
             href="https://k7.lnk.to/exhale"
             target="_blank"
             rel="noreferrer"
-            className="text-center font-light text-[13px] uppercase tracking-[0.1em] text-[#0222A0]/90 hover:line-through md:mt-3 md:text-lg"
+            className="text-center font-light text-[13px] capitalize tracking-[0.1em] text-[#0222A0]/90 hover:line-through md:mt-3 md:text-lg"
           >
             Batu & Donato Dozzy - 'Exhale'
           </a>
           <p className="text-center font-light text-[13px] lowercase tracking-[0rem] text-[#0222A0]/90 md:text-lg">
             out now on K7
           </p>
-          <div ref={newsletterZoneRef} className="mt-4  flex w-full max-w-[300px] flex-col items-center md:mt-2">
+          <div ref={newsletterZoneRef} className="mt-10  flex w-full max-w-[300px] flex-col items-center md:mt-2">
           <form
             className="flex w-full flex-col items-center"
             onSubmit={async (event) => {
