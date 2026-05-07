@@ -161,7 +161,7 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
             Instagram
           </a>
 
-          <div className="pointer-events-auto fixed bottom-4 left-1/2 z-[70] flex -translate-x-1/2 items-center gap-4 md:hidden">
+          <div className="pointer-events-auto fixed inset-x-0 bottom-0 z-[90] flex items-center justify-center gap-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3 md:hidden">
             <button type="button" onClick={() => setIsInfoOpen(true)} className={`inline-flex ${navItemBaseClass}`}>
               Info
             </button>
@@ -295,7 +295,7 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
         </div>
       )}
 
-      <section className="relative z-20 flex min-h-screen items-center justify-center p-6">
+      <section className="relative z-20 flex min-h-[100svh] items-center justify-center p-4 md:p-6">
         <div className="flex flex-col items-center gap-0">
           <a
             href="https://k7.lnk.to/exhale"
@@ -306,20 +306,21 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
             <img
               src="/K7466-Album-Main.jpg"
               alt="Album cover"
-              className="h-auto w-[92vw] max-w-[92vw] object-contain md:w-[340px] md:max-w-none md:mt-15 lg:w-[350px]"
+              className="h-auto w-[82vw] max-w-[82vw] object-contain md:w-[380px] md:max-w-none lg:w-[350px]"
             />
           </a>
           <a
             href="https://k7.lnk.to/exhale"
             target="_blank"
             rel="noreferrer"
-            className="text-center text-base uppercase tracking-[0.1em] md:mt-3 text-[#0222A0]/90 hover:line-through md:text-lg"
+            className="text-center font-light text-[14px] uppercase tracking-[0.1em] text-[#0222A0]/90 hover:line-through md:mt-3 md:text-lg"
           >
-            Batu & Donato Dozzy - Exhale
+            Batu & Donato Dozzy - 'Exhale'
           </a>
-          <p className="text-center text-base lowercase tracking-[0rem] text-[#0222A0]/90 md:text-lg"> out now on K7
+          <p className="text-center font-light text-[14px] lowercase tracking-[0rem] text-[#0222A0]/90 md:text-lg">
+            out now on K7
           </p>
-          <div ref={newsletterZoneRef} className="mt-2 flex w-full max-w-[300px] flex-col items-center">
+          <div ref={newsletterZoneRef} className="mt-3 flex w-full max-w-[300px] flex-col items-center md:mt-2">
           <form
             className="flex w-full flex-col items-center"
             onSubmit={async (event) => {
@@ -349,7 +350,9 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
               }
             }}
           >
-            <p className="md:mb-5  md:mt-10 pt-20 pb-10 text-center text-[18px] uppercase leading-tight tracking-[0.08em] text-[#0222A0]/80">subscribe to the newsletter</p>
+            <p className="pt-6 pb-4 text-center font-light text-[14px] uppercase leading-tight tracking-[0.08em] text-[#0222A0]/80 md:mb-5 md:mt-10 md:pt-20 md:pb-10 md:text-[18px]">
+              subscribe to the newsletter
+            </p>
             <label htmlFor="newsletter-email" className="sr-only">
               Email address
             </label>
@@ -377,7 +380,7 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
             {!newsletterSubmitted && hasValidEmail && (
               <button
                 type="submit"
-                className="mt-2 text-center text-[12px] uppercase tracking-[0.08em] text-[#0222A0] hover:opacity-70"
+                className="mt-2 text-center text-[11px] uppercase tracking-[0.08em] text-[#0222A0] hover:opacity-70"
               >
                 submit
               </button>
