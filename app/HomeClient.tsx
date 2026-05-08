@@ -242,17 +242,17 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
       {isInfoMounted && (
         <div
           className={[
-            "fixed inset-0 z-[50] flex items-center justify-center bg-[#A74814] p-4 pt-1 transition-opacity duration-300 md:p-8",
+            "fixed inset-0 z-[50] flex items-center justify-center bg-[#A74814] p-0 transition-opacity duration-300 md:p-8",
             isInfoVisible && !isInfoClosing ? "opacity-100" : "opacity-0",
           ].join(" ")}
         >
           <div
             className={[
-              "hide-scrollbar relative max-h-[85vh] w-full max-w-[92vw] overflow-y-auto bg-[#A74814] p-4 pt-1 text-[#0222A0] transition-transform duration-200 sm:max-w-3xl md:p-8",
+              "hide-scrollbar relative h-full max-h-[100svh] w-full max-w-full overflow-y-auto bg-[#A74814] px-4 pb-6 text-[#0222A0] transition-transform duration-200 sm:max-w-3xl md:h-auto md:max-h-[85vh] md:max-w-3xl md:p-8",
               isInfoVisible && !isInfoClosing ? "translate-y-0" : "translate-y-0",
             ].join(" ")}
           >
-            <div className="sticky top-2 z-10 -mx-5 mb-4 flex items-start justify-between bg-[#A74814] px-5 pb-3 pt-1 md:-mx-8 md:px-8">
+            <div className="sticky top-0 z-10 -mx-4 mb-4 flex items-start justify-between bg-[#A74814] px-4 pb-3 pt-[max(1.25rem,env(safe-area-inset-top))] md:-mx-8 md:px-8 md:pt-2">
               <p className="text-sm uppercase tracking-[0.08em] text-[#0222A0] md:text-base">
                 Info
               </p>
