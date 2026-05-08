@@ -69,6 +69,29 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
     };
   }, [isInfoOpen]);
 
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 767px)");
+
+    const apply = () => {
+      if (!mq.matches) return;
+
+      const html = document.documentElement;
+      const body = document.body;
+
+      // On landing (Info closed): lock viewport (no scroll).
+      // On Info modal: allow vertical scroll but never horizontal overflow.
+      const allowVerticalScroll = isInfoMounted;
+      html.style.overflowX = "hidden";
+      body.style.overflowX = "hidden";
+      html.style.overflowY = allowVerticalScroll ? "auto" : "hidden";
+      body.style.overflowY = allowVerticalScroll ? "auto" : "hidden";
+    };
+
+    apply();
+    mq.addEventListener("change", apply);
+    return () => mq.removeEventListener("change", apply);
+  }, [isInfoMounted]);
+
   const openInfo = () => setIsInfoOpen(true);
   const closeInfo = () => {
     setIsInfoClosing(true);
@@ -229,7 +252,7 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
               isInfoVisible && !isInfoClosing ? "translate-y-0" : "translate-y-0",
             ].join(" ")}
           >
-            <div className="sticky top-0 z-10 -mx-5 mb-4 flex items-start justify-between bg-[#A74814] px-5 pb-3 pt-1 md:-mx-8 md:px-8">
+            <div className="sticky top-2 z-10 -mx-5 mb-4 flex items-start justify-between bg-[#A74814] px-5 pb-3 pt-1 md:-mx-8 md:px-8">
               <p className="text-sm uppercase tracking-[0.08em] text-[#0222A0] md:text-base">
                 Info
               </p>
@@ -366,7 +389,7 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
             Batu & Donato Dozzy - 'Exhale'
           </a>
           <p className="text-center font-light text-[13px] lowercase tracking-[0rem] text-[#0222A0]/90 md:text-lg">
-            out now on K7
+            out 30/6, single 'Drift' out now
           </p>
           <div ref={newsletterZoneRef} className="mt-10  flex w-full max-w-[300px] flex-col items-center md:mt-2">
           <form
