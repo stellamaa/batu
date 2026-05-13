@@ -183,8 +183,9 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
         setImagePosition({ x: 24, y: 24 });
       }}
     >
+      <h1 className="sr-only">Batu — DJ and Producer</h1>
       <header className="pointer-events-none select-none">
-        <nav className={`${wireOne.className} z-40`}>
+        <nav className={`${wireOne.className} z-40`} aria-label="Primary">
           <button
             type="button"
             onClick={openInfo}
@@ -195,7 +196,7 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
           <a
             href="https://ra.co/dj/batu-uk"
             target="_blank"
-            rel="noreferrer"
+            rel="noopener noreferrer"
             className={`${navItemBaseClass} pointer-events-auto fixed right-4 top-1 hidden md:inline-flex`}
           >
             Tour
@@ -203,7 +204,7 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
           <a
             href="https://batutimedance.bandcamp.com/"
             target="_blank"
-            rel="noreferrer"
+            rel="noopener noreferrer"
             className={`${navItemBaseClass} pointer-events-auto fixed left-4 bottom-1 hidden md:inline-flex`}
           >
             Bandcamp
@@ -211,7 +212,7 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
           <a
             href="https://www.instagram.com/batu_timedance/"
             target="_blank"
-            rel="noreferrer"
+            rel="noopener noreferrer"
             className={`${navItemBaseClass} pointer-events-auto fixed bottom-1 right-4 hidden md:inline-flex`}
           >
             Instagram
@@ -221,18 +222,19 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
             <button type="button" onClick={openInfo} className={`inline-flex ${navItemBaseClass}`}>
               Info
             </button>
-            <a href="https://ra.co/dj/batu-uk" target="_blank" rel="noreferrer" className={`inline-flex ${navItemBaseClass}`}>
+            <a href="https://ra.co/dj/batu-uk" target="_blank" rel="noopener noreferrer" className={`inline-flex ${navItemBaseClass}`}>
               Tour
             </a>
-            <a href="https://batutimedance.bandcamp.com/" target="_blank" rel="noreferrer" className={`inline-flex ${navItemBaseClass}`}>
+            <a href="https://batutimedance.bandcamp.com/" target="_blank" rel="noopener noreferrer" className={`inline-flex ${navItemBaseClass}`}>
               Bandcamp
             </a>
-            <a href="https://www.instagram.com/batu_timedance/" target="_blank" rel="noreferrer" className={`inline-flex ${navItemBaseClass}`}>
+            <a href="https://www.instagram.com/batu_timedance/" target="_blank" rel="noopener noreferrer" className={`inline-flex ${navItemBaseClass}`}>
               Instagram
             </a>
           </div>
         </nav>
         <div
+          aria-hidden="true"
           className={`${doublePivot.className} fixed left-1/2 top-3 z-40 -translate-x-1/2 text-[28px] leading-none tracking-wide text-[#0222A0] opacity-60 md:text-[36px]`}
         >
           BATU
@@ -338,18 +340,20 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
 
       {activeImage && (
         <div
+          aria-hidden="true"
           className="pointer-events-none fixed z-40 hidden w-[140px] overflow-hidden shadow-2xl md:block"
           style={{
             left: `${imagePosition.x}px`,
             top: `${imagePosition.y}px`,
           }}
         >
-          <img src={activeImage} alt="Sanity image preview" className="h-auto w-full object-cover" />
+          <img src={activeImage} alt="" className="h-auto w-full object-cover" />
         </div>
       )}
 
       {activeVideo && (
         <div
+          aria-hidden="true"
           className="pointer-events-none fixed z-30 hidden h-[180px] w-[210px] overflow-hidden bg-white/40 shadow-2xl md:block"
           style={{ left: `${cursorPosition.x}px`, top: `${cursorPosition.y}px` }}
         >
@@ -371,19 +375,20 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
           <a
             href="https://k7.lnk.to/exhale"
             target="_blank"
-            rel="noreferrer"
+            rel="noopener noreferrer"
+            aria-label="Listen to Batu & Donato Dozzy — Exhale"
             className="block md:mt-16 lg:mt-12"
           >
             <img
               src="/K7466-Album-Main.jpg"
-              alt="Album cover"
+              alt="Batu & Donato Dozzy — Exhale (album cover)"
               className="h-auto w-[82vw] max-w-[82vw] mb-2 object-contain md:w-[380px] md:max-w-none lg:w-[350px]"
             />
           </a>
           <a
             href="https://k7.lnk.to/exhale"
             target="_blank"
-            rel="noreferrer"
+            rel="noopener noreferrer"
             className="text-center font-light text-[13px] capitalize tracking-[0.1em] text-[#0222A0]/90 hover:line-through md:mt-3 md:text-lg"
           >
             Batu & Donato Dozzy - 'Exhale'
