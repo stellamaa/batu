@@ -5,7 +5,20 @@ import { doublePivot, wireOne } from "./fonts";
 
 const videos = ["/batuvideo.mov", "/batuvideo2.mov", "/batuvideo3.mov"];
 const navItemBaseClass =
-  "z-[60] items-center px-1 py-1 text-[28px] uppercase tracking-[0.03em] text-[#0222A0] no-underline transition-opacity duration-200 hover:opacity-80 hover:line-through";
+  "z-[60] items-center px-1 py-1 text-[28px] uppercase tracking-[0.03em] text-[#0222A0] no-underline transition-opacity duration-200 hover:opacity-80 hover:line-through min-[2000px]:text-[36px]";
+
+const overlayHeaderClass =
+  "text-[12px] uppercase tracking-[0.08em] text-[#0222A0] leading-relaxed md:text-base min-[2000px]:text-lg";
+
+const overlayMobileActionClass =
+  "font-[family-name:var(--font-geist-sans)] text-[12px] uppercase tracking-[0.08em] text-[#0222A0] leading-relaxed hover:opacity-70 hover:line-through min-[2000px]:text-lg";
+
+const overlayBodyClass =
+  "w-full space-y-3 pb-[max(6rem,calc(5rem+env(safe-area-inset-bottom)))] text-[12px] leading-relaxed md:space-y-4 md:pb-0 md:text-base min-[2000px]:space-y-5 min-[2000px]:text-lg";
+
+const largeScreenNavInsetClass = "min-[2000px]:left-8 min-[2000px]:top-3";
+const largeScreenNavInsetRightClass = "min-[2000px]:right-8 min-[2000px]:top-3";
+const largeScreenNavInsetBottomClass = "min-[2000px]:bottom-3";
 
 const followLinks = [
   { label: "Batu", href: "https://www.instagram.com/batu_timedance/" },
@@ -181,23 +194,38 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
 
   useEffect(() => {
     const mq = window.matchMedia("(max-width: 767px)");
+    const html = document.documentElement;
+    const body = document.body;
 
     const apply = () => {
-      if (!mq.matches) return;
-
-      const html = document.documentElement;
-      const body = document.body;
-
-      const allowVerticalScroll = isOverlayMounted;
       html.style.overflowX = "hidden";
       body.style.overflowX = "hidden";
-      html.style.overflowY = allowVerticalScroll ? "auto" : "hidden";
-      body.style.overflowY = allowVerticalScroll ? "auto" : "hidden";
+
+      if (isOverlayMounted) {
+        html.style.overflowY = "hidden";
+        body.style.overflowY = "hidden";
+        return;
+      }
+
+      if (!mq.matches) {
+        html.style.overflowY = "";
+        body.style.overflowY = "";
+        return;
+      }
+
+      html.style.overflowY = "hidden";
+      body.style.overflowY = "hidden";
     };
 
     apply();
     mq.addEventListener("change", apply);
-    return () => mq.removeEventListener("change", apply);
+    return () => {
+      mq.removeEventListener("change", apply);
+      html.style.overflowX = "";
+      html.style.overflowY = "";
+      body.style.overflowX = "";
+      body.style.overflowY = "";
+    };
   }, [isOverlayMounted]);
 
   useEffect(() => {
@@ -228,7 +256,6 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
     return () => document.removeEventListener("click", closeOnOutsideClick);
   }, [isListenOpen]);
 
-  const openOverlay = (panel: OverlayPanel) => setOverlayPanel(panel);
   const closeOverlay = () => {
     setIsOverlayClosing(true);
     setIsOverlayVisible(false);
@@ -238,6 +265,24 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
       setIsOverlayClosing(false);
     }, 200);
   };
+
+  const openOverlay = (panel: OverlayPanel) => {
+    setIsFollowOpen(false);
+    setIsListenOpen(false);
+    setOverlayPanel(panel);
+  };
+
+  useEffect(() => {
+    if (!overlayPanel) return;
+
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") closeOverlay();
+    };
+
+    document.addEventListener("keydown", closeOnEscape);
+    return () => document.removeEventListener("keydown", closeOnEscape);
+  }, [overlayPanel]);
+
   const openProjects = () => {
     setIsListenOpen(false);
     openOverlay("projects");
@@ -329,7 +374,7 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
           <button
             type="button"
             onClick={() => openOverlay("info")}
-            className={`${navItemBaseClass} pointer-events-auto fixed left-4 top-1 hidden md:inline-flex`}
+            className={`${navItemBaseClass} pointer-events-auto fixed left-4 top-1 hidden md:inline-flex ${largeScreenNavInsetClass}`}
           >
             Info
           </button>
@@ -337,12 +382,12 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
             href="https://ra.co/dj/batu-uk"
             target="_blank"
             rel="noopener noreferrer"
-            className={`${navItemBaseClass} pointer-events-auto fixed right-4 top-1 hidden md:inline-flex`}
+            className={`${navItemBaseClass} pointer-events-auto fixed right-4 top-1 hidden md:inline-flex ${largeScreenNavInsetRightClass}`}
           >
             Tour
           </a>
           <div
-            className={`${wireOne.className} pointer-events-auto group fixed bottom-1 left-4 z-[60] hidden md:flex md:items-center`}
+            className={`${wireOne.className} pointer-events-auto group fixed bottom-1 left-4 z-[60] hidden md:flex md:items-center ${largeScreenNavInsetBottomClass} min-[2000px]:left-8`}
           >
             <span className={`${navItemBaseClass} inline-flex cursor-default whitespace-nowrap`}>
               Projects
@@ -366,7 +411,7 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
             </div>
           </div>
           <div
-            className={`${wireOne.className} pointer-events-auto group fixed bottom-1 right-4 z-[60] hidden md:flex md:items-center`}
+            className={`${wireOne.className} pointer-events-auto group fixed bottom-1 right-4 z-[60] hidden md:flex md:items-center ${largeScreenNavInsetBottomClass} min-[2000px]:right-8`}
           >
             <div className="pointer-events-none flex items-center gap-1 pr-2 opacity-0 transition-opacity duration-200 group-hover:pointer-events-auto group-hover:opacity-100">
               {followLinks.map((link) => (
@@ -386,6 +431,7 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
             </span>
           </div>
 
+          {!isOverlayMounted && (
           <div className="pointer-events-auto fixed inset-x-0 bottom-0 z-[90] flex items-center justify-center gap-4 bg-[#A74814] px-4 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-2 md:hidden">
             <button type="button" onClick={() => openOverlay("info")} className={`inline-flex ${navItemBaseClass}`}>
               Info
@@ -465,10 +511,11 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
               )}
             </div>
           </div>
+          )}
         </nav>
         <div
           aria-hidden="true"
-          className={`${doublePivot.className} fixed left-1/2 top-3 z-40 -translate-x-1/2 text-[28px] leading-none tracking-wide text-[#0222A0] opacity-60 md:text-[36px]`}
+          className={`${doublePivot.className} fixed left-1/2 top-3 z-40 -translate-x-1/2 text-[28px] leading-none tracking-wide text-[#0222A0] opacity-60 md:text-[36px] min-[2000px]:top-5 min-[2000px]:text-[48px]`}
         >
           BATU
         </div>
@@ -477,31 +524,31 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
       {isOverlayMounted && (
         <div
           className={[
-            "fixed inset-0 z-[50] flex items-center justify-center bg-[#A74814] p-0 transition-opacity duration-300 md:p-8",
+            "fixed inset-0 z-[100] flex items-center justify-center bg-[#A74814] p-0 transition-opacity duration-300 md:p-8 min-[2000px]:p-12",
             isOverlayVisible && !isOverlayClosing ? "opacity-100" : "opacity-0",
           ].join(" ")}
         >
           <div
             className={[
-              "hide-scrollbar relative h-full max-h-[100svh] w-full max-w-full overflow-y-auto bg-[#A74814] px-4 pb-6 text-[#0222A0] transition-transform duration-200 sm:max-w-3xl md:h-auto md:max-h-[85vh] md:max-w-3xl md:p-8",
+              "hide-scrollbar relative h-full max-h-[100svh] w-full max-w-full overflow-y-auto bg-[#A74814] px-4 pb-6 text-[#0222A0] transition-transform duration-200 md:h-auto md:max-h-[85vh] md:max-w-3xl md:p-8 min-[2000px]:max-w-5xl min-[2000px]:p-12",
               isOverlayVisible && !isOverlayClosing ? "translate-y-0" : "translate-y-0",
             ].join(" ")}
           >
-            <div className="sticky top-0 z-10 -mx-4 mb-4 flex items-start justify-between bg-[#A74814] px-4 pb-3 pt-[max(1.25rem,env(safe-area-inset-top))] md:-mx-8 md:px-8 md:pt-2">
-              <p className="text-sm uppercase tracking-[0.08em] text-[#0222A0] md:text-base">
+            <div className="sticky top-0 z-10 -mx-4 mb-4 flex items-center justify-between bg-[#A74814] px-4 pb-3 pt-[max(1rem,env(safe-area-inset-top))] md:-mx-8 md:px-8 md:pt-2">
+              <p className={`${overlayHeaderClass} font-[family-name:var(--font-geist-sans)] md:font-[family-name:var(--font-wire-one)]`}>
                 {overlayPanel === "projects" ? "projects" : "Info"}
               </p>
               <button
                 type="button"
                 onClick={closeOverlay}
-                className="text-sm uppercase tracking-[0.08em] text-[#0222A0] hover:opacity-70 hover:line-through md:text-base"
+                className={`${overlayHeaderClass} hidden font-[family-name:var(--font-wire-one)] hover:opacity-70 hover:line-through md:inline-flex`}
               >
                 Close
               </button>
             </div>
 
             {overlayPanel === "info" ? (
-              <div className="space-y-3 w-70 pr-4 pb-10 text-[12px] leading-relaxed md:space-y-4 md:pr-8 md:pb-0 md:text-base md:w-full md:mt-15">
+              <div className={`${overlayBodyClass} md:mt-15 md:pr-8 min-[2000px]:mt-20`}>
                 <p>
                   Known for his distinctive slant on modernist techno and leftfield
                   club music, Batu has built a sound defined by bold shapes,
@@ -572,7 +619,7 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
                 </p>
               </div>
             ) : (
-              <div className="space-y-6 w-70 pr-4 pb-10 text-[12px] leading-relaxed md:space-y-8 md:pr-8 md:pb-0 md:text-base md:w-full md:mt-15">
+              <div className={`${overlayBodyClass} space-y-6 md:space-y-8 md:mt-15 md:pr-8 min-[2000px]:mt-20 min-[2000px]:space-y-10`}>
                 {collaborationYears.map((section) => (
                   <div key={section.year} className="space-y-3 md:space-y-4">
                     <p className="uppercase tracking-[0.08em]">{section.year}</p>
@@ -598,6 +645,16 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
                 ))}
               </div>
             )}
+          </div>
+
+          <div className="pointer-events-none fixed inset-x-0 bottom-0 z-[110] flex justify-center bg-[#A74814] px-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3 md:hidden">
+            <button
+              type="button"
+              onClick={closeOverlay}
+              className={`pointer-events-auto ${overlayMobileActionClass} min-h-12 min-w-[8rem]`}
+            >
+              Close
+            </button>
           </div>
         </div>
       )}
@@ -645,33 +702,33 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
         </div>
       )}
 
-      <section className="relative z-20 flex min-h-[100svh] items-center justify-center px-4 pb-16 pt-3 md:p-6">
-        <div className="flex flex-col items-center gap-0">
+      <section className="relative z-20 flex min-h-[100svh] items-center justify-center px-4 pb-[max(5rem,calc(4.5rem+env(safe-area-inset-bottom)))] pt-[max(0.75rem,env(safe-area-inset-top))] md:p-6 md:pb-16 min-[2000px]:p-10">
+        <div className="flex w-full flex-col items-center gap-0 min-[2000px]:max-w-[640px]">
           <a
             href="https://k7.lnk.to/exhale"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Listen to Batu & Donato Dozzy — Exhale"
-            className="block md:mt-16 lg:mt-12"
+            className="block md:mt-16 lg:mt-12 min-[2000px]:mt-16"
           >
             <img
               src="/K7466-Album-Main.jpg"
               alt="Batu & Donato Dozzy — Exhale (album cover)"
-              className="h-auto w-[82vw] max-w-[82vw] mb-2 object-contain md:w-[380px] md:max-w-none lg:w-[350px]"
+              className="mb-2 h-auto w-[82vw] max-w-[82vw] object-contain md:w-[380px] md:max-w-none lg:w-[350px] min-[2000px]:w-[480px]"
             />
           </a>
           <a
             href="https://k7.lnk.to/exhale"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-center font-light text-[13px] capitalize tracking-[0.1em] text-[#0222A0]/90 hover:line-through md:mt-3 md:text-lg"
+            className="text-center font-light text-[13px] capitalize tracking-[0.1em] text-[#0222A0]/90 hover:line-through md:mt-3 md:text-lg min-[2000px]:text-2xl"
           >
             Batu & Donato Dozzy - 'Exhale'
           </a>
-          <p className="text-center font-light text-[13px] lowercase tracking-[0rem] text-[#0222A0]/90 md:text-lg">
+          <p className="text-center font-light text-[13px] lowercase tracking-[0rem] text-[#0222A0]/90 md:text-lg min-[2000px]:text-2xl">
             out 30/6, single 'Drift' out now
           </p>
-          <div ref={newsletterZoneRef} className="mt-10  flex w-full max-w-[300px] flex-col items-center md:mt-2">
+          <div ref={newsletterZoneRef} className="mt-10 flex w-full max-w-[300px] flex-col items-center md:mt-2 min-[2000px]:max-w-[420px]">
           <form
             className="flex w-full flex-col items-center"
             onSubmit={async (event) => {
@@ -701,14 +758,14 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
               }
             }}
           >
-            <p className="pt-3 pb-2 text-center font-light text-[12px] uppercase leading-tight tracking-[0.08em] text-[#0222A0]/80 md:mb-5 md:mt-10 md:pt-20 md:pb-10 md:text-[18px]">
+            <p className="pt-3 pb-2 text-center font-light text-[12px] uppercase leading-tight tracking-[0.08em] text-[#0222A0]/80 md:mb-5 md:mt-10 md:pt-20 md:pb-10 md:text-[18px] min-[2000px]:text-[22px]">
               subscribe to the newsletter
             </p>
             <label htmlFor="newsletter-email" className="sr-only">
               Email address
             </label>
             {newsletterSubmitted ? (
-              <p className="w-full border-0 border-b border-[#0222A0]/90 bg-transparent px-1 pb-1 text-center text-[13px] uppercase tracking-[0.07em] text-[#0222A0]">
+              <p className="w-full border-0 border-b border-[#0222A0]/90 bg-transparent px-1 pb-1 text-center text-[13px] uppercase tracking-[0.07em] text-[#0222A0] min-[2000px]:text-base">
                 thanks for signing up!
               </p>
             ) : (
@@ -720,18 +777,18 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
                 value={newsletterEmail}
                 onChange={(event) => setNewsletterEmail(event.target.value)}
                 placeholder="enter email address"
-                className="w-full border-0 border-b border-[#0222A0]/90 bg-transparent px-1 pb-1 text-center text-[13px] uppercase tracking-[0.07em] text-[#0222A0] placeholder:text-[#0222A0]/60 focus:outline-none"
+                className="w-full border-0 border-b border-[#0222A0]/90 bg-transparent px-1 pb-1 text-center text-[13px] uppercase tracking-[0.07em] text-[#0222A0] placeholder:text-[#0222A0]/60 focus:outline-none min-[2000px]:text-base"
               />
             )}
             {newsletterError && (
-              <p className="mt-2 text-center text-[11px] uppercase tracking-[0.06em] text-[#0222A0]/80">
+              <p className="mt-2 text-center text-[11px] uppercase tracking-[0.06em] text-[#0222A0]/80 min-[2000px]:text-sm">
                 {newsletterError}
               </p>
             )}
             {!newsletterSubmitted && hasValidEmail && (
               <button
                 type="submit"
-                className="mt-1 text-center text-[11px] uppercase tracking-[0.08em] text-[#0222A0] hover:opacity-70"
+                className="mt-1 text-center text-[11px] uppercase tracking-[0.08em] text-[#0222A0] hover:opacity-70 min-[2000px]:text-sm"
               >
                 submit
               </button>
