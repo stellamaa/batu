@@ -93,7 +93,7 @@ const jsonLd = {
       url: SITE_URL,
       image: `${SITE_URL}/K7466-Album-Main.jpg`,
       description:
-        "Batu is a DJ and producer hailed for his distinctive slant on modernist techno and experimental club music. His 2022 debut album Opal expanded his sound design into broader spheres of expression. As a DJ he performs at Glastonbury, Dekmantel, Sonar and Unsound.",
+        "Known for his distinctive slant on modernist techno and leftfield club music, Batu has built a sound defined by bold shapes, percussive rhythms and meticulous sonic detail. Recent highlights include sets at Draaimolen, Glastonbury and Drumsheds, and a collaborative album with Donato Dozzy.",
       genre: ["Techno", "Electronic", "Experimental Club"],
       sameAs: [
         "https://ra.co/dj/batu-uk",

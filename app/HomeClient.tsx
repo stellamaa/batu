@@ -7,6 +7,83 @@ const videos = ["/batuvideo.mov", "/batuvideo2.mov", "/batuvideo3.mov"];
 const navItemBaseClass =
   "z-[60] items-center px-1 py-1 text-[28px] uppercase tracking-[0.03em] text-[#0222A0] no-underline transition-opacity duration-200 hover:opacity-80 hover:line-through";
 
+const followLinks = [
+  { label: "Batu", href: "https://www.instagram.com/batu_timedance/" },
+  { label: "Dials", href: "https://www.instagram.com/dials.music" },
+  { label: "Timedance", href: "https://timedance.music/" },
+] as const;
+
+const BANDCAMP_URL = "https://batutimedance.bandcamp.com/";
+
+type CollaborationEntry = {
+  title: string;
+  href?: string;
+};
+
+type CollaborationYear = {
+  year: string;
+  items: CollaborationEntry[];
+};
+
+const collaborationYears: CollaborationYear[] = [
+  {
+    year: "2026",
+    items: [
+      {
+        title: "Batu & Donato Dozzy - Exhale",
+        href: "https://batutimedance.bandcamp.com/album/exhale-2",
+      },
+      {
+        title: "Mirage ft. Art School Girlfriend (Batu Remix)",
+        href: "https://scalerband.bandcamp.com/track/mirage-ft-art-school-girlfriend-batu-remix",
+      },
+      {
+        title: "Groovedeep - Funk Solo (Batu Remix)",
+        href: "https://turborecordings.bandcamp.com/track/funk-solo-batu-remix",
+      },
+      {
+        title: "Jamie Woon - Ghost (Batu Remix)",
+        href: "https://jamiewoon.bandcamp.com/track/ghost-batu-remix",
+      },
+    ],
+  },
+  {
+    year: "2025",
+    items: [
+      {
+        title: "FKA twigs & Pinkpanteress - Wild & Alone prod. Batu",
+        href: "https://youtu.be/kvswW4Ys-08?si=tUle8YUJcXqqlRfQ",
+      },
+      {
+        title: "Batu - Question Mark EP",
+        href: "https://batutimedance.bandcamp.com/album/question-mark",
+      },
+      {
+        title: "Tricky (Theis Thaw) - Where Are You Lately (Batu Remix)",
+        href: "https://www.youtube.com/watch?v=BxuYUNLvnvc",
+      },
+      {
+        title: "Tikiman - Free Your Mind prod. Batu",
+        href: "https://kynantrecords.bandcamp.com/track/c1-paul-st-hilaire-batu-free-your-mind",
+      },
+      {
+        title: "FKA twigs - Perfectly prod. Batu",
+        href: "https://peacerussie.bandcamp.com/track/perfectly",
+      },
+      {
+        title: "Stepney Western - dir. Harry Lawson. Music by Omar McCutcheon",
+        href: "https://djmag.com/news/batu-soundtracks-documentary-young-inner-city-horse-riders-newcastle-stepney-western",
+      },
+      {
+        title: "Mixmag cover feature",
+        href: "https://mixmag.net/feature/the-cover-mix-batu",
+      },
+    ],
+  },
+];
+
+type OverlayPanel = "info" | "projects";
+
 /** Padding around the newsletter zone where hover previews stay hidden */
 const NEWSLETTER_NEAR_PADDING_PX = 96;
 /** Padding around links/buttons where hover previews stay hidden */
@@ -43,31 +120,64 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
   const [newsletterEmail, setNewsletterEmail] = useState("");
   const [newsletterSubmitted, setNewsletterSubmitted] = useState(false);
   const [newsletterError, setNewsletterError] = useState<string | null>(null);
-  const [isInfoOpen, setIsInfoOpen] = useState(false);
-  const [isInfoMounted, setIsInfoMounted] = useState(false);
-  const [isInfoVisible, setIsInfoVisible] = useState(false);
-  const [isInfoClosing, setIsInfoClosing] = useState(false);
+  const [overlayPanel, setOverlayPanel] = useState<OverlayPanel | null>(null);
+  const [isOverlayMounted, setIsOverlayMounted] = useState(false);
+  const [isOverlayVisible, setIsOverlayVisible] = useState(false);
+  const [isOverlayClosing, setIsOverlayClosing] = useState(false);
+  const [isFollowOpen, setIsFollowOpen] = useState(false);
+  const [isListenOpen, setIsListenOpen] = useState(false);
   const newsletterZoneRef = useRef<HTMLDivElement>(null);
+  const followMenuRef = useRef<HTMLDivElement>(null);
+  const listenMenuRef = useRef<HTMLDivElement>(null);
+  const videoRefs = useRef<Record<string, HTMLVideoElement | null>>({});
   const hasValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(newsletterEmail.trim());
 
   useEffect(() => {
-    if (!isInfoOpen) return;
-    setIsInfoMounted(true);
-    setIsInfoClosing(false);
-    setIsInfoVisible(false);
+    for (const src of randomImages) {
+      const img = new Image();
+      img.src = src;
+    }
 
-    // Ensure the modal renders in its "hidden" state for one paint,
-    // then toggle visibility on the next frame so CSS transitions run on open.
+    for (const src of videos) {
+      const video = document.createElement("video");
+      video.preload = "auto";
+      video.muted = true;
+      video.playsInline = true;
+      video.src = src;
+      video.load();
+    }
+  }, [randomImages]);
+
+  useEffect(() => {
+    if (!activeVideo) return;
+
+    for (const src of videos) {
+      const video = videoRefs.current[src];
+      if (!video) continue;
+      if (src === activeVideo) {
+        void video.play().catch(() => {});
+      } else {
+        video.pause();
+      }
+    }
+  }, [activeVideo]);
+
+  useEffect(() => {
+    if (!overlayPanel) return;
+    setIsOverlayMounted(true);
+    setIsOverlayClosing(false);
+    setIsOverlayVisible(false);
+
     let raf1 = 0;
     let raf2 = 0;
     raf1 = window.requestAnimationFrame(() => {
-      raf2 = window.requestAnimationFrame(() => setIsInfoVisible(true));
+      raf2 = window.requestAnimationFrame(() => setIsOverlayVisible(true));
     });
     return () => {
       if (raf1) window.cancelAnimationFrame(raf1);
       if (raf2) window.cancelAnimationFrame(raf2);
     };
-  }, [isInfoOpen]);
+  }, [overlayPanel]);
 
   useEffect(() => {
     const mq = window.matchMedia("(max-width: 767px)");
@@ -78,9 +188,7 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
       const html = document.documentElement;
       const body = document.body;
 
-      // On landing (Info closed): lock viewport (no scroll).
-      // On Info modal: allow vertical scroll but never horizontal overflow.
-      const allowVerticalScroll = isInfoMounted;
+      const allowVerticalScroll = isOverlayMounted;
       html.style.overflowX = "hidden";
       body.style.overflowX = "hidden";
       html.style.overflowY = allowVerticalScroll ? "auto" : "hidden";
@@ -90,17 +198,49 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
     apply();
     mq.addEventListener("change", apply);
     return () => mq.removeEventListener("change", apply);
-  }, [isInfoMounted]);
+  }, [isOverlayMounted]);
 
-  const openInfo = () => setIsInfoOpen(true);
-  const closeInfo = () => {
-    setIsInfoClosing(true);
-    setIsInfoVisible(false);
+  useEffect(() => {
+    if (!isFollowOpen) return;
+
+    const closeOnOutsideClick = (event: MouseEvent) => {
+      const target = event.target as Node;
+      if (followMenuRef.current && !followMenuRef.current.contains(target)) {
+        setIsFollowOpen(false);
+      }
+    };
+
+    document.addEventListener("click", closeOnOutsideClick);
+    return () => document.removeEventListener("click", closeOnOutsideClick);
+  }, [isFollowOpen]);
+
+  useEffect(() => {
+    if (!isListenOpen) return;
+
+    const closeOnOutsideClick = (event: MouseEvent) => {
+      const target = event.target as Node;
+      if (listenMenuRef.current && !listenMenuRef.current.contains(target)) {
+        setIsListenOpen(false);
+      }
+    };
+
+    document.addEventListener("click", closeOnOutsideClick);
+    return () => document.removeEventListener("click", closeOnOutsideClick);
+  }, [isListenOpen]);
+
+  const openOverlay = (panel: OverlayPanel) => setOverlayPanel(panel);
+  const closeOverlay = () => {
+    setIsOverlayClosing(true);
+    setIsOverlayVisible(false);
     window.setTimeout(() => {
-      setIsInfoOpen(false);
-      setIsInfoMounted(false);
-      setIsInfoClosing(false);
+      setOverlayPanel(null);
+      setIsOverlayMounted(false);
+      setIsOverlayClosing(false);
     }, 200);
+  };
+  const openProjects = () => {
+    setIsListenOpen(false);
+    openOverlay("projects");
   };
 
   const handleMouseMove: MouseEventHandler<HTMLElement> = (event) => {
@@ -188,7 +328,7 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
         <nav className={`${wireOne.className} z-40`} aria-label="Primary">
           <button
             type="button"
-            onClick={openInfo}
+            onClick={() => openOverlay("info")}
             className={`${navItemBaseClass} pointer-events-auto fixed left-4 top-1 hidden md:inline-flex`}
           >
             Info
@@ -201,36 +341,129 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
           >
             Tour
           </a>
-          <a
-            href="https://batutimedance.bandcamp.com/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={`${navItemBaseClass} pointer-events-auto fixed left-4 bottom-1 hidden md:inline-flex`}
+          <div
+            className={`${wireOne.className} pointer-events-auto group fixed bottom-1 left-4 z-[60] hidden md:flex md:items-center`}
           >
-            Bandcamp
-          </a>
-          <a
-            href="https://www.instagram.com/batu_timedance/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={`${navItemBaseClass} pointer-events-auto fixed bottom-1 right-4 hidden md:inline-flex`}
+            <span className={`${navItemBaseClass} inline-flex cursor-default whitespace-nowrap`}>
+              Projects
+            </span>
+            <div className="pointer-events-none flex items-center gap-1 pl-2 opacity-0 transition-opacity duration-200 group-hover:pointer-events-auto group-hover:opacity-100">
+              <a
+                href={BANDCAMP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`${navItemBaseClass} inline-flex whitespace-nowrap`}
+              >
+                Bandcamp
+              </a>
+              <button
+                type="button"
+                onClick={openProjects}
+                className={`${navItemBaseClass} inline-flex whitespace-nowrap`}
+              >
+                Projects
+              </button>
+            </div>
+          </div>
+          <div
+            className={`${wireOne.className} pointer-events-auto group fixed bottom-1 right-4 z-[60] hidden md:flex md:items-center`}
           >
-            Instagram
-          </a>
+            <div className="pointer-events-none flex items-center gap-1 pr-2 opacity-0 transition-opacity duration-200 group-hover:pointer-events-auto group-hover:opacity-100">
+              {followLinks.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`${navItemBaseClass} inline-flex whitespace-nowrap`}
+                >
+                  {link.label}
+                </a>
+              ))}
+            </div>
+            <span className={`${navItemBaseClass} inline-flex cursor-default whitespace-nowrap`}>
+              Follow
+            </span>
+          </div>
 
           <div className="pointer-events-auto fixed inset-x-0 bottom-0 z-[90] flex items-center justify-center gap-4 bg-[#A74814] px-4 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-2 md:hidden">
-            <button type="button" onClick={openInfo} className={`inline-flex ${navItemBaseClass}`}>
+            <button type="button" onClick={() => openOverlay("info")} className={`inline-flex ${navItemBaseClass}`}>
               Info
             </button>
             <a href="https://ra.co/dj/batu-uk" target="_blank" rel="noopener noreferrer" className={`inline-flex ${navItemBaseClass}`}>
               Tour
             </a>
-            <a href="https://batutimedance.bandcamp.com/" target="_blank" rel="noopener noreferrer" className={`inline-flex ${navItemBaseClass}`}>
-              Bandcamp
-            </a>
-            <a href="https://www.instagram.com/batu_timedance/" target="_blank" rel="noopener noreferrer" className={`inline-flex ${navItemBaseClass}`}>
-              Instagram
-            </a>
+            <div ref={listenMenuRef} className="relative inline-flex">
+              <button
+                type="button"
+                aria-expanded={isListenOpen}
+                aria-haspopup="true"
+                aria-controls="projects-submenu-mobile"
+                onClick={() => setIsListenOpen((open) => !open)}
+                className={`inline-flex ${navItemBaseClass} ${isListenOpen ? "opacity-80 line-through" : ""}`}
+              >
+                Projects
+              </button>
+              {isListenOpen && (
+                <div
+                  id="projects-submenu-mobile"
+                  role="menu"
+                  className="fixed inset-x-0 bottom-[max(3.25rem,calc(2.75rem+env(safe-area-inset-bottom)))] z-[95] flex items-center justify-center gap-3 px-4"
+                >
+                  <a
+                    href={BANDCAMP_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    role="menuitem"
+                    onClick={() => setIsListenOpen(false)}
+                    className={`inline-flex ${navItemBaseClass}`}
+                  >
+                    Bandcamp
+                  </a>
+                  <button
+                    type="button"
+                    role="menuitem"
+                    onClick={openProjects}
+                    className={`inline-flex ${navItemBaseClass}`}
+                  >
+                    Projects
+                  </button>
+                </div>
+              )}
+            </div>
+            <div ref={followMenuRef} className="relative inline-flex">
+              <button
+                type="button"
+                aria-expanded={isFollowOpen}
+                aria-haspopup="true"
+                aria-controls="follow-submenu-mobile"
+                onClick={() => setIsFollowOpen((open) => !open)}
+                className={`inline-flex ${navItemBaseClass} ${isFollowOpen ? "opacity-80 line-through" : ""}`}
+              >
+                Follow
+              </button>
+              {isFollowOpen && (
+                <div
+                  id="follow-submenu-mobile"
+                  role="menu"
+                  className="fixed inset-x-0 bottom-[max(3.25rem,calc(2.75rem+env(safe-area-inset-bottom)))] z-[95] flex items-center justify-center gap-3 px-4"
+                >
+                  {followLinks.map((link) => (
+                    <a
+                      key={link.href}
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      role="menuitem"
+                      onClick={() => setIsFollowOpen(false)}
+                      className={`inline-flex ${navItemBaseClass}`}
+                    >
+                      {link.label}
+                    </a>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
         </nav>
         <div
@@ -241,99 +474,130 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
         </div>
       </header>
 
-      {isInfoMounted && (
+      {isOverlayMounted && (
         <div
           className={[
             "fixed inset-0 z-[50] flex items-center justify-center bg-[#A74814] p-0 transition-opacity duration-300 md:p-8",
-            isInfoVisible && !isInfoClosing ? "opacity-100" : "opacity-0",
+            isOverlayVisible && !isOverlayClosing ? "opacity-100" : "opacity-0",
           ].join(" ")}
         >
           <div
             className={[
               "hide-scrollbar relative h-full max-h-[100svh] w-full max-w-full overflow-y-auto bg-[#A74814] px-4 pb-6 text-[#0222A0] transition-transform duration-200 sm:max-w-3xl md:h-auto md:max-h-[85vh] md:max-w-3xl md:p-8",
-              isInfoVisible && !isInfoClosing ? "translate-y-0" : "translate-y-0",
+              isOverlayVisible && !isOverlayClosing ? "translate-y-0" : "translate-y-0",
             ].join(" ")}
           >
             <div className="sticky top-0 z-10 -mx-4 mb-4 flex items-start justify-between bg-[#A74814] px-4 pb-3 pt-[max(1.25rem,env(safe-area-inset-top))] md:-mx-8 md:px-8 md:pt-2">
               <p className="text-sm uppercase tracking-[0.08em] text-[#0222A0] md:text-base">
-                Info
+                {overlayPanel === "projects" ? "projects" : "Info"}
               </p>
               <button
                 type="button"
-                onClick={closeInfo}
+                onClick={closeOverlay}
                 className="text-sm uppercase tracking-[0.08em] text-[#0222A0] hover:opacity-70 hover:line-through md:text-base"
               >
                 Close
               </button>
             </div>
 
-            <div className="space-y-3 w-70 pr-4 pb-10 text-[12px] leading-relaxed md:space-y-4 md:pr-8 md:pb-0 md:text-base md:w-full md:mt-15" >
-              <p>
-                As an artist, Batu continually strikes out on his own. Rightly
-                hailed for his distinctive slant on modernist techno and
-                experimental club music, he&apos;s also prolific beyond the
-                dancefloor. His is a sound marked out by bold shapes and
-                angular expressions, whether strapped to physical rhythms or
-                not.
-              </p>
+            {overlayPanel === "info" ? (
+              <div className="space-y-3 w-70 pr-4 pb-10 text-[12px] leading-relaxed md:space-y-4 md:pr-8 md:pb-0 md:text-base md:w-full md:mt-15">
+                <p>
+                  Known for his distinctive slant on modernist techno and leftfield
+                  club music, Batu has built a sound defined by bold shapes,
+                  percussive rhythms and meticulous sonic detail.
+                </p>
 
-              <p>
-                His 2022 debut album Opal took his accomplished sound design
-                into broader spheres of expression, while production work for
-                serpentwithfeet saw him approaching pop sensibilities with his
-                non-conformist sonic palette. As well as his production work,
-                Batu&apos;s presence as a DJ on the international club and
-                festival circuit touches on venerated events such as
-                Glastonbury, Dekmantel Festival, Sonar and Unsound. The
-                flexibility in his sound also translates to the intimacy of
-                smaller underground events - an environment which remains
-                inspiring even as he graces some of the biggest stages for
-                electronic music globally.
-              </p>
+                <p>
+                  Recent years have marked a series of landmarks for Batu. He
+                  celebrated a double milestone: 10 years of his future-facing
+                  Timedance label and five years of En Masse Festival, a project he
+                  founded, rooted in Bristol&apos;s innovative electronic music
+                  scene. This period also saw production work for FKA twigs and
+                  PinkPantheress, Shantie Celeste, collaborations with Tikiman and
+                  Nick León and a remix for Tricky. He closed 2025 with a Mixmag
+                  cover feature and named on their list of &ldquo;DJs Who Defined
+                  2025&rdquo;.
+                </p>
 
-              <p>
-                Beyond sonics, his interests expand into visual work too,
-                having produced and directed the video to his own track
-                &lsquo;Solace&rsquo; and collaborated on an A/V composition with
-                Harry Butt for his Crack Magazine cover feature - one of
-                multiple cover features he&apos;s been placed on.
-              </p>
+                <p>
+                  2026 continues that momentum. Batu has delivered three new remixes
+                  and launched DIALS, a band project rooted in smokey, lowslung pop
+                  music that marks a new dimension to his creative output. Most
+                  significantly, he released a collaborative album with the techno
+                  great Donato Dozzy, a meeting of two of electronic music&apos;s
+                  most distinctive voices.
+                </p>
 
-              <p>
-                Taken alongside his music, Batu&apos;s holistic engagement with
-                electronic music culture adds up to a considered spectrum of
-                output and efforts with a shared aim - to push things forward.
-              </p>
+                <p>
+                  As a DJ, Batu moves fluidly between the intimacy of underground
+                  spaces and major international stages. Recent highlights include
+                  sets at Draaimolen, Glastonbury and Drumsheds, alongside tours
+                  across the US, Asia and South America.
+                </p>
 
-              <p className="pt-4">
-                Contact:{" "}
-                <a
-                  href="mailto:raj@giantartistmanagement.com"
-                  className="hover:line-through"
-                >
-                  raj@giantartistmanagement.com
-                </a>
-                {" / "}
-                <a
-                  href="mailto:hiroki@giantartistmanagement.com"
-                  className="hover:line-through"
-                >
-                  hiroki@giantartistmanagement.com
-                </a>
-              </p>
+                <p>
+                  His creative practice also extends into soundtrack work,
+                  including scoring the short film Stepney Western, directed by
+                  Harry Lawson.
+                </p>
 
-              <p className="pt-3">
-                Site by{" "}
-                <a
-                  href="https://stellamathioudakis.com"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="hover:line-through"
-                >
-                  stellamathioudakis.com
-                </a>
-              </p>
-            </div>
+                <p className="pt-4">
+                  Contact:{" "}
+                  <a
+                    href="mailto:raj@giantartistmanagement.com"
+                    className="hover:line-through"
+                  >
+                    raj@giantartistmanagement.com
+                  </a>
+                  {" / "}
+                  <a
+                    href="mailto:hiroki@giantartistmanagement.com"
+                    className="hover:line-through"
+                  >
+                    hiroki@giantartistmanagement.com
+                  </a>
+                </p>
+
+                <p className="pt-3">
+                  Site by{" "}
+                  <a
+                    href="https://stellamathioudakis.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:line-through"
+                  >
+                    stellamathioudakis.com
+                  </a>
+                </p>
+              </div>
+            ) : (
+              <div className="space-y-6 w-70 pr-4 pb-10 text-[12px] leading-relaxed md:space-y-8 md:pr-8 md:pb-0 md:text-base md:w-full md:mt-15">
+                {collaborationYears.map((section) => (
+                  <div key={section.year} className="space-y-3 md:space-y-4">
+                    <p className="uppercase tracking-[0.08em]">{section.year}</p>
+                    <ul className="space-y-3 md:space-y-4">
+                      {section.items.map((item) => (
+                        <li key={item.title}>
+                          {item.href ? (
+                            <a
+                              href={item.href}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="hover:line-through"
+                            >
+                              {item.title}
+                            </a>
+                          ) : (
+                            item.title
+                          )}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       )}
@@ -347,7 +611,13 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
             top: `${imagePosition.y}px`,
           }}
         >
-          <img src={activeImage} alt="" className="h-auto w-full object-cover" />
+          <img
+            src={activeImage}
+            alt=""
+            decoding="async"
+            fetchPriority="low"
+            className="h-auto w-full object-cover"
+          />
         </div>
       )}
 
@@ -357,16 +627,21 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
           className="pointer-events-none fixed z-30 hidden h-[180px] w-[210px] overflow-hidden bg-white/40 shadow-2xl md:block"
           style={{ left: `${cursorPosition.x}px`, top: `${cursorPosition.y}px` }}
         >
-          <video
-            key={activeVideo}
-            src={activeVideo}
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="auto"
-            className="h-full w-full object-cover"
-          />
+          {videos.map((src) => (
+            <video
+              key={src}
+              ref={(el) => {
+                videoRefs.current[src] = el;
+              }}
+              src={src}
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="auto"
+              className={`h-full w-full object-cover ${activeVideo === src ? "block" : "hidden"}`}
+            />
+          ))}
         </div>
       )}
 
