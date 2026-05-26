@@ -11,7 +11,7 @@ const overlayHeaderClass =
   "text-[12px] uppercase tracking-[0.08em] text-[#0222A0] leading-relaxed md:text-base min-[2000px]:text-lg";
 
 const overlayMobileActionClass =
-  "font-[family-name:var(--font-geist-sans)] text-[12px] uppercase tracking-[0.08em] text-[#0222A0] leading-relaxed hover:opacity-70 hover:line-through min-[2000px]:text-lg";
+  "text-[12px] uppercase tracking-[0.08em] text-[#0222A0] leading-relaxed hover:opacity-70 hover:line-through min-[2000px]:text-lg";
 
 const overlayBodyClass =
   "w-full space-y-3 pb-[max(6rem,calc(5rem+env(safe-area-inset-bottom)))] text-[12px] leading-relaxed md:space-y-4 md:pb-0 md:text-base min-[2000px]:space-y-5 min-[2000px]:text-lg";
@@ -535,13 +535,13 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
             ].join(" ")}
           >
             <div className="sticky top-0 z-10 -mx-4 mb-4 flex items-center justify-between bg-[#A74814] px-4 pb-3 pt-[max(1rem,env(safe-area-inset-top))] md:-mx-8 md:px-8 md:pt-2">
-              <p className={`${overlayHeaderClass} font-[family-name:var(--font-geist-sans)] md:font-[family-name:var(--font-wire-one)]`}>
+              <p className={overlayHeaderClass}>
                 {overlayPanel === "projects" ? "projects" : "Info"}
               </p>
               <button
                 type="button"
                 onClick={closeOverlay}
-                className={`${overlayHeaderClass} hidden font-[family-name:var(--font-wire-one)] hover:opacity-70 hover:line-through md:inline-flex`}
+                className={`${overlayHeaderClass} hidden hover:opacity-70 hover:line-through md:inline-flex`}
               >
                 Close
               </button>
