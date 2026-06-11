@@ -548,8 +548,7 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
       {isOverlayMounted && (
         <div
           className={[
-            "fixed inset-0 z-[100] flex items-center justify-center bg-[#A74814] p-0 transition-opacity duration-300 md:p-8 min-[2000px]:p-12",
-            overlayPanel === "info" ? "md:items-start md:pt-6 min-[2000px]:pt-10" : "",
+            "fixed inset-0 z-[100] flex items-center justify-center bg-[#A74814] p-0 transition-opacity duration-300 md:items-start md:p-8 md:pt-6 min-[2000px]:p-12 min-[2000px]:pt-10",
             isOverlayVisible && !isOverlayClosing ? "opacity-100" : "opacity-0",
           ].join(" ")}
         >
@@ -664,7 +663,7 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
                 </p>
               </div>
             ) : (
-              <div className={`${overlayBodyClass} space-y-6 md:space-y-2 md:mt-5 md:pr-8 min-[2000px]:mt-20 min-[2000px]:space-y-10`}>
+              <div className={`${overlayBodyClass} space-y-6 md:space-y-2 md:mt-5 md:pr-8 min-[2000px]:mt-10 min-[2000px]:space-y-10`}>
                 <p className="flex flex-wrap items-center">
                   {worksLinks.map((item, index) => (
                     <span key={item.title} className="inline-flex items-center">
