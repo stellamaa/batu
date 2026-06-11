@@ -1,20 +1,22 @@
 "use client";
 
+import Image from "next/image";
 import { type MouseEventHandler, useEffect, useRef, useState } from "react";
+import { ALBUM_COVER_SRC, CURSOR_VIDEOS } from "../lib/media";
 import { doublePivot, wireOne } from "./fonts";
 
-const videos = ["/batuvideo.mov", "/batuvideo2.mov", "/batuvideo3.mov"];
+const videos = [...CURSOR_VIDEOS];
 const navItemBaseClass =
   "z-[60] items-center px-1 py-1 text-[28px] uppercase tracking-[0.03em] text-[#0222A0] no-underline transition-opacity duration-200 hover:opacity-80 hover:line-through min-[2000px]:text-[36px]";
 
 const overlayHeaderClass =
-  "text-[12px] uppercase tracking-[0.08em] text-[#0222A0] leading-relaxed md:text-base min-[2000px]:text-lg";
+  "text-[14px] uppercase tracking-[0.08em] text-[#0222A0] leading-relaxed md:text-base min-[2000px]:text-lg";
 
 const overlayMobileActionClass =
-  "text-[12px] uppercase tracking-[0.08em] text-[#0222A0] leading-relaxed hover:opacity-70 hover:line-through min-[2000px]:text-lg";
+  "text-[14px] uppercase tracking-[0.08em] text-[#0222A0] leading-relaxed hover:opacity-70 hover:line-through min-[2000px]:text-lg";
 
 const overlayBodyClass =
-  "w-full space-y-3 pb-[max(6rem,calc(5rem+env(safe-area-inset-bottom)))] text-[12px] leading-relaxed md:space-y-4 md:pb-0 md:text-base min-[2000px]:space-y-5 min-[2000px]:text-lg";
+  "w-full space-y-3 pb-[max(6rem,calc(5rem+env(safe-area-inset-bottom)))] text-[14px] leading-relaxed md:space-y-4 md:pb-0 md:text-base min-[2000px]:space-y-5 min-[2000px]:text-lg";
 
 const largeScreenNavInsetClass = "min-[2000px]:left-8 min-[2000px]:top-3";
 const largeScreenNavInsetRightClass = "min-[2000px]:right-8 min-[2000px]:top-3";
@@ -95,6 +97,17 @@ const collaborationYears: CollaborationYear[] = [
   },
 ];
 
+const worksLinks: CollaborationEntry[] = [
+  {
+    title: "NTS",
+    href: "https://www.nts.live/shows/a-long-strange-dream-w-batu",
+  },
+  {
+    title: "Mixes",
+    href: "https://m.soundcloud.com/batuuk/sets/mixes",
+  },
+];
+
 type OverlayPanel = "info" | "projects";
 
 /** Padding around the newsletter zone where hover previews stay hidden */
@@ -147,7 +160,7 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
 
   useEffect(() => {
     for (const src of randomImages) {
-      const img = new Image();
+      const img = new window.Image();
       img.src = src;
     }
 
@@ -521,10 +534,22 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
         </div>
       </header>
 
+      {isOverlayMounted && overlayPanel === "info" && (
+        <a
+          href="https://stellamathioudakis.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="pointer-events-auto fixed bottom-1 right-4 z-[110] hidden text-sm text-[#0222A0]/75 hover:line-through pb-[max(0.5rem,env(safe-area-inset-bottom))] md:block min-[2000px]:text-sm"
+        >
+          Site by stella mathioudakis
+        </a>
+      )}
+
       {isOverlayMounted && (
         <div
           className={[
             "fixed inset-0 z-[100] flex items-center justify-center bg-[#A74814] p-0 transition-opacity duration-300 md:p-8 min-[2000px]:p-12",
+            overlayPanel === "info" ? "md:items-start md:pt-6 min-[2000px]:pt-10" : "",
             isOverlayVisible && !isOverlayClosing ? "opacity-100" : "opacity-0",
           ].join(" ")}
         >
@@ -534,9 +559,9 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
               isOverlayVisible && !isOverlayClosing ? "translate-y-0" : "translate-y-0",
             ].join(" ")}
           >
-            <div className="sticky top-0 z-10 -mx-4 mb-4 flex items-center justify-between bg-[#A74814] px-4 pb-3 pt-[max(1rem,env(safe-area-inset-top))] md:-mx-8 md:px-8 md:pt-2">
+            <div className="sticky top-0 z-10 -mx-4 mb-4 flex items-center justify-between bg-[#A74814] px-4 pb-3 pt-[max(1rem,env(safe-area-inset-top))] md:-mx-8 md:mb-2 md:px-8 md:pt-10">
               <p className={overlayHeaderClass}>
-                {overlayPanel === "projects" ? "projects" : "Info"}
+                {overlayPanel === "projects" ? "Works" : "Info"}
               </p>
               <button
                 type="button"
@@ -548,7 +573,7 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
             </div>
 
             {overlayPanel === "info" ? (
-              <div className={`${overlayBodyClass} md:mt-15 md:pr-8 min-[2000px]:mt-20`}>
+              <div className={`${overlayBodyClass} md:mt-5 md:pr-8 min-[2000px]:mt-10`}>
                 <p>
                   Known for his distinctive slant on modernist techno and leftfield
                   club music, Batu has built a sound defined by bold shapes,
@@ -589,24 +614,44 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
                   Harry Lawson.
                 </p>
 
-                <p className="pt-4">
-                  Contact:{" "}
-                  <a
-                    href="mailto:raj@giantartistmanagement.com"
-                    className="hover:line-through"
-                  >
-                    raj@giantartistmanagement.com
-                  </a>
-                  {" / "}
-                  <a
-                    href="mailto:hiroki@giantartistmanagement.com"
-                    className="hover:line-through"
-                  >
-                    hiroki@giantartistmanagement.com
-                  </a>
-                </p>
+                <div className="space-y-3 pt-1 md:space-y-0 md:leading-snug">
+                  <p className="md:pt-0">
+                    Contact:{" "}
+                    <a
+                      href="mailto:batu@giantartistmanagement.com"
+                      className="hover:line-through"
+                    >
+                      batu@giantartistmanagement.com
+                    </a>
+                  </p>
+                  <p className="md:pt-1">
+                    Bookings:{" "}
+                    <a
+                      href="mailto:matt@octopus-agents.com"
+                      className="hover:line-through"
+                    >
+                      matt@octopus-agents.com
+                    </a>
+                    {" / "}
+                    <a
+                      href="mailto:flip@octopus-agents.com"
+                      className="hover:line-through"
+                    >
+                      flip@octopus-agents.com
+                    </a>
+                  </p>
+                  <p className="md:pt-1">
+                    North/South America bookings:{" "}
+                    <a
+                      href="mailto:ricky@visionarytalentgroup.com"
+                      className="hover:line-through"
+                    >
+                      ricky@visionarytalentgroup.com
+                    </a>
+                  </p>
+                </div>
 
-                <p className="pt-3">
+                <p className="pt-3 md:hidden">
                   Site by{" "}
                   <a
                     href="https://stellamathioudakis.com"
@@ -614,12 +659,27 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
                     rel="noopener noreferrer"
                     className="hover:line-through"
                   >
-                    stellamathioudakis.com
+                    stella mathioudakis
                   </a>
                 </p>
               </div>
             ) : (
-              <div className={`${overlayBodyClass} space-y-6 md:space-y-8 md:mt-15 md:pr-8 min-[2000px]:mt-20 min-[2000px]:space-y-10`}>
+              <div className={`${overlayBodyClass} space-y-6 md:space-y-2 md:mt-5 md:pr-8 min-[2000px]:mt-20 min-[2000px]:space-y-10`}>
+                <p className="flex flex-wrap items-center">
+                  {worksLinks.map((item, index) => (
+                    <span key={item.title} className="inline-flex items-center">
+                      {index > 0 && <span className="px-1">/</span>}
+                      <a
+                        href={item.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hover:line-through"
+                      >
+                        {item.title}
+                      </a>
+                    </span>
+                  ))}
+                </p>
                 {collaborationYears.map((section) => (
                   <div key={section.year} className="space-y-3 md:space-y-4">
                     <p className="uppercase tracking-[0.08em]">{section.year}</p>
@@ -659,48 +719,53 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
         </div>
       )}
 
-      {activeImage && (
-        <div
-          aria-hidden="true"
-          className="pointer-events-none fixed z-40 hidden w-[140px] overflow-hidden shadow-2xl md:block"
-          style={{
-            left: `${imagePosition.x}px`,
-            top: `${imagePosition.y}px`,
-          }}
-        >
+      <div
+        aria-hidden
+        className="pointer-events-none fixed z-40 hidden w-[140px] overflow-hidden shadow-2xl md:block"
+        style={{
+          left: `${imagePosition.x}px`,
+          top: `${imagePosition.y}px`,
+          opacity: activeImage ? 1 : 0,
+          visibility: activeImage ? "visible" : "hidden",
+        }}
+      >
+        {randomImages.map((src) => (
           <img
-            src={activeImage}
+            key={src}
+            src={src}
             alt=""
             decoding="async"
-            fetchPriority="low"
-            className="h-auto w-full object-cover"
+            className={`h-auto w-full object-cover ${activeImage === src ? "block" : "hidden"}`}
           />
-        </div>
-      )}
+        ))}
+      </div>
 
-      {activeVideo && (
-        <div
-          aria-hidden="true"
-          className="pointer-events-none fixed z-30 hidden h-[180px] w-[210px] overflow-hidden bg-white/40 shadow-2xl md:block"
-          style={{ left: `${cursorPosition.x}px`, top: `${cursorPosition.y}px` }}
-        >
-          {videos.map((src) => (
-            <video
-              key={src}
-              ref={(el) => {
-                videoRefs.current[src] = el;
-              }}
-              src={src}
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="auto"
-              className={`h-full w-full object-cover ${activeVideo === src ? "block" : "hidden"}`}
-            />
-          ))}
-        </div>
-      )}
+      <div
+        aria-hidden
+        className="pointer-events-none fixed z-30 hidden h-[180px] w-[210px] overflow-hidden bg-white/40 shadow-2xl md:block"
+        style={{
+          left: `${cursorPosition.x}px`,
+          top: `${cursorPosition.y}px`,
+          opacity: activeVideo ? 1 : 0,
+          visibility: activeVideo ? "visible" : "hidden",
+        }}
+      >
+        {videos.map((src) => (
+          <video
+            key={src}
+            ref={(el) => {
+              videoRefs.current[src] = el;
+            }}
+            src={src}
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+            className={`h-full w-full object-cover ${activeVideo === src ? "block" : "hidden"}`}
+          />
+        ))}
+      </div>
 
       <section className="relative z-20 flex min-h-[100svh] items-center justify-center px-4 pb-[max(5rem,calc(4.5rem+env(safe-area-inset-bottom)))] pt-[max(0.75rem,env(safe-area-inset-top))] md:p-6 md:pb-16 min-[2000px]:p-10">
         <div className="flex w-full flex-col items-center gap-0 min-[2000px]:max-w-[640px]">
@@ -711,9 +776,13 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
             aria-label="Listen to Batu & Donato Dozzy — Exhale"
             className="block md:mt-16 lg:mt-12 min-[2000px]:mt-16"
           >
-            <img
-              src="/K7466-Album-Main.jpg"
+            <Image
+              src={ALBUM_COVER_SRC}
               alt="Batu & Donato Dozzy — Exhale (album cover)"
+              width={960}
+              height={960}
+              priority
+              sizes="(max-width: 768px) 82vw, (max-width: 1024px) 380px, 350px"
               className="mb-2 h-auto w-[82vw] max-w-[82vw] object-contain md:w-[380px] md:max-w-none lg:w-[350px] min-[2000px]:w-[480px]"
             />
           </a>
@@ -728,7 +797,7 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
           <p className="text-center font-light text-[13px] lowercase tracking-[0rem] text-[#0222A0]/90 md:text-lg min-[2000px]:text-2xl">
             out 30/6, single 'Drift' out now
           </p>
-          <div ref={newsletterZoneRef} className="mt-10 flex w-full max-w-[300px] flex-col items-center md:mt-2 min-[2000px]:max-w-[420px]">
+          <div ref={newsletterZoneRef} className="mt-10 flex w-full max-w-[300px] flex-col items-center md:-mt-2 min-[2000px]:max-w-[420px]">
           <form
             className="flex w-full flex-col items-center"
             onSubmit={async (event) => {
@@ -758,7 +827,7 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
               }
             }}
           >
-            <p className="pt-3 pb-2 text-center font-light text-[12px] uppercase leading-tight tracking-[0.08em] text-[#0222A0]/80 md:mb-5 md:mt-10 md:pt-20 md:pb-10 md:text-[18px] min-[2000px]:text-[22px]">
+            <p className="pt-3 pb-2 text-center font-light text-[12px] uppercase leading-tight tracking-[0.08em] text-[#0222A0]/80 md:mb-4 md:mt-4 md:pt-10 md:pb-6 md:text-[18px] min-[2000px]:text-[22px]">
               subscribe to the newsletter
             </p>
             <label htmlFor="newsletter-email" className="sr-only">
