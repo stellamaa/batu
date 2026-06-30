@@ -307,7 +307,7 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
     if (!width || !height) return;
 
     const interactiveElements = document.querySelectorAll(
-      "a, button, input, textarea, select, form"
+      "a, button, input, textarea, select, form, [data-hide-cursor-preview]"
     );
     for (const element of interactiveElements) {
       const r = element.getBoundingClientRect();
@@ -400,6 +400,7 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
             Tour
           </a>
           <div
+            data-hide-cursor-preview
             className={`${wireOne.className} pointer-events-auto group fixed bottom-1 left-4 z-[60] hidden md:flex md:items-center ${largeScreenNavInsetBottomClass} min-[2000px]:left-8`}
           >
             <span className={`${navItemBaseClass} inline-flex cursor-default whitespace-nowrap`}>
@@ -419,11 +420,12 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
                 onClick={openProjects}
                 className={`${navItemBaseClass} inline-flex whitespace-nowrap`}
               >
-                Projects
+                Works
               </button>
             </div>
           </div>
           <div
+            data-hide-cursor-preview
             className={`${wireOne.className} pointer-events-auto group fixed bottom-1 right-4 z-[60] hidden md:flex md:items-center ${largeScreenNavInsetBottomClass} min-[2000px]:right-8`}
           >
             <div className="pointer-events-none flex items-center gap-1 pr-2 opacity-0 transition-opacity duration-200 group-hover:pointer-events-auto group-hover:opacity-100">
@@ -485,7 +487,7 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
                     onClick={openProjects}
                     className={`inline-flex ${navItemBaseClass}`}
                   >
-                    Projects
+                    Works
                   </button>
                 </div>
               )}
