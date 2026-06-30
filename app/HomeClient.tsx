@@ -45,20 +45,24 @@ const collaborationYears: CollaborationYear[] = [
     year: "2026",
     items: [
       {
-        title: "Batu & Donato Dozzy - Exhale",
+        title: "Batu & Donato Dozzy - Exhale — k7 Records",
         href: "https://batutimedance.bandcamp.com/album/exhale-2",
       },
       {
-        title: "Mirage ft. Art School Girlfriend (Batu Remix)",
+        title: "SCALER - Mirage ft. Art School Girlfriend (Batu Remix) - Black Acre",
         href: "https://scalerband.bandcamp.com/track/mirage-ft-art-school-girlfriend-batu-remix",
       },
       {
-        title: "Groovedeep - Funk Solo (Batu Remix)",
+        title: "Groovedeep - Funk Solo (Batu Remix) — Turbo Recordings",
         href: "https://turborecordings.bandcamp.com/track/funk-solo-batu-remix",
       },
       {
-        title: "Jamie Woon - Ghost (Batu Remix)",
+        title: "Jamie Woon - Ghost (Batu Remix) — Also Can",
         href: "https://jamiewoon.bandcamp.com/track/ghost-batu-remix",
+      },
+      {
+        title: "DIALS - Mirror World",
+        href: "https://dials-uk.bandcamp.com/track/mirror-world",
       },
     ],
   },
@@ -66,32 +70,246 @@ const collaborationYears: CollaborationYear[] = [
     year: "2025",
     items: [
       {
-        title: "FKA twigs & Pinkpanteress - Wild & Alone prod. Batu",
-        href: "https://youtu.be/kvswW4Ys-08?si=tUle8YUJcXqqlRfQ",
+        title: "Batu - Frostbite — Timedance",
+        href: "https://timedance.bandcamp.com/track/batu-frostbite",
       },
       {
-        title: "Batu - Question Mark EP",
+        title: "Batu - Seize — Lethal Press",
+        href: "https://batutimedance.bandcamp.com/track/seize",
+      },
+      {
+        title: "Batu - Question Mark EP — Lethal Press",
         href: "https://batutimedance.bandcamp.com/album/question-mark",
       },
       {
-        title: "Tricky (Theis Thaw) - Where Are You Lately (Batu Remix)",
-        href: "https://www.youtube.com/watch?v=BxuYUNLvnvc",
+        title: "FKA twigs & Pinkpanteress - Wild & Alone prod. Batu — Atlantic",
+        href: "https://youtu.be/kvswW4Ys-08?si=tUle8YUJcXqqlRfQ",
       },
       {
-        title: "Tikiman - Free Your Mind prod. Batu",
+        title: "FKA twigs - Perfectly additional prod. Batu — Atlantic",
+        href: "https://youtu.be/KPpw_580QUU?si=gJ_BjnYUbPtguMR6",
+      },
+      {
+        title: "Tricky (Theis Thaw) - Where Are You Lately (Batu Remix)",
+        href: "https://tricky.bandcamp.com/album/where-are-you-lately-batu-remix-2",
+      },
+      {
+        title: "Tikiman - Free Your Mind prod. Batu — Kynant Records",
         href: "https://kynantrecords.bandcamp.com/track/c1-paul-st-hilaire-batu-free-your-mind",
       },
       {
-        title: "FKA twigs - Perfectly prod. Batu",
-        href: "https://peacerussie.bandcamp.com/track/perfectly",
-      },
-      {
         title: "Stepney Western - dir. Harry Lawson. Music by Omar McCutcheon",
-        href: "https://djmag.com/news/batu-soundtracks-documentary-young-inner-city-horse-riders-newcastle-stepney-western",
+        href: "https://sidegallery.co.uk/whats-on/exhibitions/stepney-western",
       },
       {
         title: "Mixmag cover feature",
-        href: "https://mixmag.net/feature/the-cover-mix-batu",
+        href: "https://mixmag.net/feature/batu-cover-feature-interview-timedance-10-years",
+      },
+      {
+        title: "Resident Advisor Exchange",
+        href: "https://youtu.be/mqc_xTBg8hg?si=Z7059srunxr4kvgc",
+      },
+    ],
+  },
+  {
+    year: "2024",
+    items: [
+      {
+        title: "Batu - Zeal / Sunday — A Long Strange Dream",
+        href: "https://batutimedance.bandcamp.com/album/zeal-sunday",
+      },
+      {
+        title: "Batu - Other Means — A Long Strange Dream",
+        href: "https://batutimedance.bandcamp.com/track/other-means",
+      },
+      {
+        title: "Batu - Sour 2 Taste — A Long Strange Dream",
+        href: "https://batutimedance.bandcamp.com/track/sour-2-taste",
+      },
+      {
+        title: "Batu & Nick Leon - Yiu EP — A Long Strange Dream",
+        href: "https://batunickleon.bandcamp.com/album/yiu",
+      },
+      {
+        title: "Identifying the Displaced - dir. Harry Lawson. Music by Omar McCutcheon",
+        href: "https://youtu.be/v73gYlidPfE?si=3lo_q-Mvkj2k0X6D",
+      },
+      {
+        title: "33EMYBW - Predator Chorus 掠食者合唱 feat. Batu — SVBKVLT",
+        href: "https://svbkvlt.bandcamp.com/track/predator-chorus-feat-batu",
+      },
+    ],
+  },
+  {
+    year: "2023",
+    items: [
+      {
+        title: "Batu - Built On Sand — Timedance",
+        href: "https://batutimedance.bandcamp.com/track/built-on-sand",
+      },
+      {
+        title: "Batu - For Spirits — A Long Strange Dream",
+        href: "https://batutimedance.bandcamp.com/album/for-spirits",
+      },
+      {
+        title: "Batu - flown — A Long Strange Dream",
+        href: "https://batutimedance.bandcamp.com/track/flown",
+      },
+      {
+        title: "Batu - half speed — A Long Strange Dream",
+        href: "https://batutimedance.bandcamp.com/album/half-speed",
+      },
+    ],
+  },
+  {
+    year: "2022",
+    items: [
+      {
+        title: "Batu - Opal — Timedance",
+        href: "https://batutimedance.bandcamp.com/album/opal",
+      },
+      {
+        title: "Batu - Spectral Hearts (Drum Mix) — Timedance",
+        href: "https://batutimedance.bandcamp.com/track/spectral-hearts-drum-mix",
+      },
+      {
+        title: "Batu - Face Of The Lake — RVNG Intl.",
+        href: "https://rvng.bandcamp.com/track/batu-face-of-the-lake",
+      },
+      {
+        title: "DJ Mag cover feature",
+        href: "https://djmag.com/cover-features/batu-long-strange-dream",
+      },
+    ],
+  },
+  {
+    year: "2021",
+    items: [
+      {
+        title: "Batu - I Own Your Energy — Timedance",
+        href: "https://batutimedance.bandcamp.com/album/i-own-your-energy",
+      },
+      {
+        title: "BBC Radio 1 Essential Mix",
+        href: "https://www.youtube.com/watch?v=_iuFPRZSKrc",
+      },
+      {
+        title: "serpentwithfeet — DEACON various prod. credits Batu — Secretly Canadian",
+      },
+      {
+        title: "First Light Studio launch",
+        href: "https://mixmag.net/read/batu-bristol-first-free-access-music-studio-first-light-news",
+      },
+    ],
+  },
+  {
+    year: "2020",
+    items: [
+      {
+        title: "Batu & Lurka - Curved — Fringe White",
+        href: "https://lurka.bandcamp.com/album/curved-bambounou-hyper-street-remix",
+      },
+      {
+        title: "Batu & Butt Studio - Void Dez",
+        href: "https://youtu.be/TufFYn3eZ1E?si=GjL6Roucpx-AMcXt",
+      },
+      {
+        title: "Batu Crack Magazine cover feature",
+        href: "https://crackmagazine.net/article/profiles/batu/",
+      },
+    ],
+  },
+  {
+    year: "2019",
+    items: [
+      {
+        title: "Batu - False Reeds — Timedance",
+        href: "https://batutimedance.bandcamp.com/album/false-reeds",
+      },
+    ],
+  },
+  {
+    year: "2018",
+    items: [
+      {
+        title: "Batu - Rebuilt EP — XL Recordings",
+        href: "https://www.youtube.com/watch?v=97ZDUF75b1k",
+      },
+      {
+        title: "Steevio — Hiraeth (Batu Remix) — Wisdom Teeth",
+        href: "https://steevio.bandcamp.com/track/hiraeth-batu-remix",
+      },
+      {
+        title: "The Maghreban — Eddies (Batu Remix) — R&S Records",
+        href: "https://maghreban.bandcamp.com/track/eddies-batu-remix",
+      },
+    ],
+  },
+  {
+    year: "2017",
+    items: [
+      {
+        title: "Batu - Murmur — Timedance",
+        href: "https://batutimedance.bandcamp.com/album/murmur",
+      },
+      {
+        title: "Batu - Marius EP — Hessle Audio",
+        href: "https://batutimedance.bandcamp.com/album/marius-ep",
+      },
+      {
+        title: "Batu & Lurka - Kneqq / Struck — Fringe White",
+        href: "https://www.youtube.com/watch?v=9tg7ZODcMkI",
+      },
+      {
+        title: "Sampha — Plastic 100°C (Batu Remix) — Young Turks",
+        href: "https://www.youtube.com/watch?v=CMnj9NwxNXU",
+      },
+    ],
+  },
+  {
+    year: "2016",
+    items: [
+      {
+        title: "Batu - Bleeper Feed / April These — Livity Sound",
+        href: "https://www.youtube.com/watch?v=RsipwP9kr_k",
+      },
+      {
+        title: "Batu - Monolith — Timedance",
+        href: "https://batutimedance.bandcamp.com/album/monolith",
+      },
+      {
+        title: "Batu & Lurka - Fringe White — Fringe White",
+        href: "https://lurka.bandcamp.com/album/fringe-white-ep-2",
+      },
+    ],
+  },
+  {
+    year: "2015",
+    items: [
+      {
+        title: "Batu - Cardinal / Domino Theory — Timedance",
+        href: "https://batutimedance.bandcamp.com/album/cardinal-domino-theory",
+      },
+      {
+        title: "Batu - Numen / Cazz — Timedance",
+        href: "https://batutimedance.bandcamp.com/album/batu-numen-cazz",
+      },
+      {
+        title: "Batu - Dekalb / Collate — Timedance",
+        href: "https://batutimedance.bandcamp.com/album/dekalb-collate",
+      },
+    ],
+  },
+  {
+    year: "2013",
+    items: [
+      {
+        title: "Batu - Eraser / Stairwells — Cold Recordings",
+        href: "https://www.youtube.com/watch?v=5cJDLXGmvno",
+      },
+      {
+        title: "Batu - Spooked / Clarity (Dismantled) — Livity Sound",
+        href: "https://batutimedance.bandcamp.com/album/spooked-clarity-dismantled?label=1454301132&tab=music",
       },
     ],
   },
@@ -99,13 +317,14 @@ const collaborationYears: CollaborationYear[] = [
 
 const worksLinks: CollaborationEntry[] = [
   {
-    title: "NTS",
-    href: "https://www.nts.live/shows/a-long-strange-dream-w-batu",
-  },
-  {
     title: "Mixes",
     href: "https://m.soundcloud.com/batuuk/sets/mixes",
   },
+  {
+    title: "NTS",
+    href: "https://www.nts.live/shows/a-long-strange-dream-w-batu",
+  }
+  
 ];
 
 type OverlayPanel = "info" | "projects";
@@ -152,6 +371,7 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
   const [isOverlayClosing, setIsOverlayClosing] = useState(false);
   const [isFollowOpen, setIsFollowOpen] = useState(false);
   const [isListenOpen, setIsListenOpen] = useState(false);
+  const [openWorksYear, setOpenWorksYear] = useState<string | null>("2026");
   const newsletterZoneRef = useRef<HTMLDivElement>(null);
   const followMenuRef = useRef<HTMLDivElement>(null);
   const listenMenuRef = useRef<HTMLDivElement>(null);
@@ -298,7 +518,12 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
 
   const openProjects = () => {
     setIsListenOpen(false);
+    setOpenWorksYear("2026");
     openOverlay("projects");
+  };
+
+  const toggleWorksYear = (year: string) => {
+    setOpenWorksYear((current) => (current === year ? null : year));
   };
 
   const handleMouseMove: MouseEventHandler<HTMLElement> = (event) => {
@@ -681,29 +906,45 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
                     </span>
                   ))}
                 </p>
-                {collaborationYears.map((section) => (
-                  <div key={section.year} className="space-y-3 md:space-y-4">
-                    <p className="uppercase tracking-[0.08em]">{section.year}</p>
-                    <ul className="space-y-3 md:space-y-4">
-                      {section.items.map((item) => (
-                        <li key={item.title}>
-                          {item.href ? (
-                            <a
-                              href={item.href}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="hover:line-through"
-                            >
-                              {item.title}
-                            </a>
-                          ) : (
-                            item.title
-                          )}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
+                {collaborationYears.map((section) => {
+                  const isOpen = openWorksYear === section.year;
+                  return (
+                    <div key={section.year} className="space-y-3 md:space-y-4">
+                      <button
+                        type="button"
+                        aria-expanded={isOpen}
+                        aria-controls={`works-year-${section.year}`}
+                        onClick={() => toggleWorksYear(section.year)}
+                        className={`uppercase tracking-[0.08em] hover:line-through ${isOpen ? "line-through opacity-80" : ""}`}
+                      >
+                        {section.year}
+                      </button>
+                      {isOpen && (
+                        <ul
+                          id={`works-year-${section.year}`}
+                          className="space-y-3 md:space-y-4"
+                        >
+                          {section.items.map((item) => (
+                            <li key={item.title}>
+                              {item.href ? (
+                                <a
+                                  href={item.href}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="hover:line-through"
+                                >
+                                  {item.title}
+                                </a>
+                              ) : (
+                                item.title
+                              )}
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
             )}
           </div>
