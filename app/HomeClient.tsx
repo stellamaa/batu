@@ -333,6 +333,20 @@ type OverlayPanel = "info" | "projects";
 const NEWSLETTER_NEAR_PADDING_PX = 96;
 /** Padding around links/buttons where hover previews stay hidden */
 const INTERACTIVE_NEAR_PADDING_PX = 42;
+/** Wider center band so middle cursor media activates beside the album cover */
+const CURSOR_CENTER_ZONE_START = 0.22;
+const CURSOR_CENTER_ZONE_END = 0.78;
+
+function getCursorMediaIndex(clientX: number, width: number, count: number): number {
+  if (count <= 1) return 0;
+  const ratio = clientX / width;
+  if (count === 3) {
+    if (ratio < CURSOR_CENTER_ZONE_START) return 0;
+    if (ratio > CURSOR_CENTER_ZONE_END) return 2;
+    return 1;
+  }
+  return Math.min(count - 1, Math.floor(ratio * count));
+}
 
 function formatSubscribeError(raw: unknown): string {
   if (typeof raw === "string") return raw;
@@ -532,7 +546,7 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
     if (!width || !height) return;
 
     const interactiveElements = document.querySelectorAll(
-      "a, button, input, textarea, select, form, [data-hide-cursor-preview]"
+      "a:not([data-allow-cursor-preview]), button, input, textarea, select, form, [data-hide-cursor-preview]"
     );
     for (const element of interactiveElements) {
       const r = element.getBoundingClientRect();
@@ -567,8 +581,7 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
       }
     }
 
-    const sectionWidth = width / 3;
-    const nextIndex = Math.min(2, Math.floor(event.clientX / sectionWidth));
+    const nextIndex = getCursorMediaIndex(event.clientX, width, videos.length);
     const previewWidth = Math.min(220, width * 0.45);
     const previewHeight = previewWidth * (9 / 16);
     const offset = 18;
@@ -578,8 +591,7 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
     const nextY = Math.min(maxY, event.clientY + offset);
     setCursorPosition({ x: nextX, y: nextY });
     if (randomImages.length > 0) {
-      const imageSectionWidth = width / randomImages.length;
-      const nextImageIndex = Math.min(randomImages.length - 1, Math.floor(event.clientX / imageSectionWidth));
+      const nextImageIndex = getCursorMediaIndex(event.clientX, width, randomImages.length);
       const imagePreviewWidth = 140;
       const imagePreviewHeight = 105;
       const imageX = Math.max(0, Math.min(width - imagePreviewWidth - 12, event.clientX - imagePreviewWidth - 18));
@@ -892,6 +904,7 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
             ) : (
               <div className={`${overlayBodyClass} space-y-6 md:space-y-2 md:mt-5 md:pr-8 min-[2000px]:mt-10 min-[2000px]:space-y-10`}>
                 <p className="flex flex-wrap items-center">
+                  <span className="pr-1">DJ:</span>
                   {worksLinks.map((item, index) => (
                     <span key={item.title} className="inline-flex items-center">
                       {index > 0 && <span className="px-1">/</span>}
@@ -1016,6 +1029,7 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Listen to Batu & Donato Dozzy — Exhale"
+            data-allow-cursor-preview
             className="block md:mt-16 lg:mt-12 min-[2000px]:mt-16"
           >
             <Image
@@ -1037,7 +1051,7 @@ export function HomeClient({ randomImages }: { randomImages: string[] }) {
             Batu & Donato Dozzy - 'Exhale'
           </a>
           <p className="text-center font-light text-[13px] lowercase tracking-[0rem] text-[#0222A0]/90 md:text-lg min-[2000px]:text-2xl">
-            out 30/6, single 'Drift' out now
+           out now
           </p>
           <div ref={newsletterZoneRef} className="mt-10 flex w-full max-w-[300px] flex-col items-center md:-mt-2 min-[2000px]:max-w-[420px]">
           <form
